@@ -1,4 +1,4 @@
-<div class="alert alert-primary">
+<!-- <div class="alert alert-primary">
   <div class="row">
     <div class="col-10">{{course.title}}</div>
     <div class="col-2">
@@ -6,6 +6,19 @@
         <button type="button" class="btn btn-success">done</button>
         <button type="button" class="btn btn-danger">cancel</button>
       </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="card">
+  <div class="card-body">
+    <h5><a class="card-title">{{course.title}}</a></h5>
+    <span class="oi oi-clock"></span><span> {{course.duration}} min</span>
+    <p>{{course.creationDate}}</p>
+    <p class="card-text">{{course.description}}</p>
+    <div class="btn-group">
+      <button type="button" class="btn btn-secondary">edit</button>
+      <button type="button" class="btn btn-danger">delete</button>
     </div>
   </div>
 </div>
