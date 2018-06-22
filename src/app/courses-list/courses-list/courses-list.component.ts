@@ -8,7 +8,6 @@ import { CoursesService } from '../courses.service';
   styleUrls: ['./courses-list.component.css']
 })
 export class CoursesListComponent implements OnInit {
-
   public courses: Course[] = [];
 
   constructor(private coursesService: CoursesService) { }
