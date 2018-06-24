@@ -8,12 +8,18 @@ import { CoursesService } from '../courses.service';
   styleUrls: ['./courses-list.component.css']
 })
 export class CoursesListComponent implements OnInit {
-  public courses: Course[] = [];
+  public courses: Course[];
 
-  constructor(private coursesService: CoursesService) { }
+  constructor(private coursesService: CoursesService) {
+    this.courses = [];
+  }
 
   ngOnInit() {
     this.courses = this.coursesService.getCoursesList();
+  }
+
+  updateCourses(event) {
+    console.log(`courseId: ${event.courseId}`);
   }
 
 }

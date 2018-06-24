@@ -1,2 +1,2 @@
 <app-toolbox></app-toolbox>
-<app-course *ngFor="let item of courses" [course]="item"></app-course>
+<app-course *ngFor="let item of courses" [course]="item" (courseChangeEvent)="updateCourses($event)"></app-course>
