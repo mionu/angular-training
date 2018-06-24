@@ -19,7 +19,11 @@ export class CoursesListComponent implements OnInit {
   }
 
   updateCourses(event) {
-    console.log(`courseId: ${event.courseId}`);
+    console.log(event);
+  }
+
+  loadMore() {
+    console.log('load more clicked');
   }
 
 }

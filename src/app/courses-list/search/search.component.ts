@@ -11,7 +11,7 @@ export class SearchComponent implements OnInit {
   constructor() { }
 
   onClick() {
-    console.log(this.searchQuery);
+    console.log(`search for: ${this.searchQuery}`);
     this.searchQuery = ''
   }
 
