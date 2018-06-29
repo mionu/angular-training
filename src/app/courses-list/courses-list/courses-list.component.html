@@ -1,2 +1,3 @@
 <app-toolbox></app-toolbox>
-<app-course *ngFor="let item of courses" [course]="item"></app-course>
+<app-course *ngFor="let item of courses" [course]="item" (courseChangeEvent)="updateCourses($event)"></app-course>
+<button type="button" class="btn btn-outline-secondary btn-lg btn-block" (click)="loadMore()">Load more</button>
