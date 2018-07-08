@@ -1,29 +1,12 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { Component } from '@angular/core';
-
-@Component({selector: 'app-header', template: ''})
-class HeaderStubComponent {}
-
-@Component({selector: 'app-breadcrumbs', template: ''})
-class BreadcrumbsStubComponent {}
-
-@Component({selector: 'app-courses-list', template: ''})
-class CoursesListStubComponent {}
-
-@Component({selector: 'app-footer', template: ''})
-class FooterStubComponent {}
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent,
-        HeaderStubComponent,
-        BreadcrumbsStubComponent,
-        CoursesListStubComponent,
-        FooterStubComponent
-      ]
+      declarations: [ AppComponent ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     }).compileComponents();
   }));
   it('should create the app', async(() => {

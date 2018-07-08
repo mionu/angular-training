@@ -1,16 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { CoursesListComponent } from './courses-list.component';
 import { CoursesService } from '../courses.service';
-import { Component, Input } from '@angular/core';
+import { Component, Input, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Course } from '../course.model';
-
-@Component({selector: 'app-toolbox', template: ''})
-class ToolboxStubComponent {}
-
-@Component({selector: 'app-course', template: ''})
-class CourseStubComponent {
-  @Input() public course: Course;
-}
 
 describe('CoursesListComponent', () => {
   let component: CoursesListComponent;
@@ -19,12 +11,9 @@ describe('CoursesListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        CoursesListComponent,
-        ToolboxStubComponent,
-        CourseStubComponent
-      ],
-      providers:[ { provide: CoursesService, useValue: coursesServiceStub } ]
+      declarations: [ CoursesListComponent],
+      providers:[ { provide: CoursesService, useValue: coursesServiceStub } ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
     .compileComponents();
   }));
