@@ -20,6 +20,11 @@ describe('BreadcrumbsComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeDefined();
+  });
+
+  it('should have courses list as default active area', () => {
+    const activeItem = fixture.nativeElement.querySelector('li.active');
+    expect(activeItem.textContent).toEqual('Courses');
   });
 });
