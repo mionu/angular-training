@@ -10,9 +10,9 @@ export class SearchComponent implements OnInit {
 
   constructor() { }
 
-  onClick() {
+  search() {
     console.log(`search for: ${this.searchQuery}`);
-    this.searchQuery = ''
+    this.searchQuery = '';
   }
 
   ngOnInit() {
