@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Course } from '../course.model';
+import { CourseEntity as Course } from '../course.entity';
 
 @Component({
   selector: 'app-course',
@@ -7,10 +7,11 @@ import { Course } from '../course.model';
   styleUrls: ['./course.component.css']
 })
 export class CourseComponent implements OnInit {
-  @Input() public course: Course
+  @Input() public course: Course;
   @Output() public courseChangeEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }
