@@ -1,4 +1,5 @@
 <app-toolbox></app-toolbox>
+<div *ngIf="!this.hasCourses" class="alert alert-secondary">No data, feel free to add new course</div>
 <app-course *ngFor="let item of courses"
   [course]="item" (courseChangeEvent)="updateCourses($event)"></app-course>
-<button type="button" class="btn btn-outline-secondary btn-lg btn-block" (click)="loadMore()">Load more</button>
+<button type="button" *ngIf="this.hasCourses" class="btn btn-outline-secondary btn-lg btn-block" (click)="loadMore()">Load more</button>

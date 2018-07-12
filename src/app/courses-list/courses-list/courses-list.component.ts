@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CourseEntity as Course } from '../course.entity';
+import { Course } from '../course.model';
 import { CoursesService } from '../courses.service';
 
 @Component({
@@ -16,6 +16,10 @@ export class CoursesListComponent implements OnInit {
 
   ngOnInit() {
     this.courses = this.coursesService.getCoursesList();
+  }
+
+  get hasCourses() {
+    return this.courses.length > 0;
   }
 
   updateCourses(event) {

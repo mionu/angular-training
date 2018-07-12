@@ -1,5 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { CourseEntity as Course } from '../course.entity';
+import * as moment from 'moment';
+import { Course } from '../course.model';
+
+const freshCourseDaysLimit = 14;
 
 @Component({
   selector: 'app-course',
@@ -18,6 +21,17 @@ export class CourseComponent implements OnInit {
 
   deleteCourse(event) {
     this.courseChangeEvent.emit({ event: 'delete', courseId: this.course.id });
+  }
+
+  getCourseOutlineColor() {
+    switch(true) {
+      case this.course.creationDate > +moment():
+        return 'primary';
+      case this.course.creationDate > +moment().subtract(freshCourseDaysLimit, 'days'):
+        return 'success';
+      default:
+        return 'secondary';
+    }
   }
 
 }
