@@ -24,10 +24,11 @@ export class CourseComponent implements OnInit {
   }
 
   getCourseOutlineColor() {
+    const dateDiff = moment().diff(this.course.creationDate, 'days');
     switch(true) {
-      case this.course.creationDate > +moment():
+      case dateDiff < 0:
         return 'primary';
-      case this.course.creationDate > +moment().subtract(freshCourseDaysLimit, 'days'):
+      case dateDiff < freshCourseDaysLimit:
         return 'success';
       default:
         return 'secondary';
