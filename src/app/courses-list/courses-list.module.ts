@@ -7,6 +7,7 @@ import { ToolboxComponent } from './toolbox/toolbox.component';
 import { SearchComponent } from './search/search.component';
 import { CourseOutlineDirective } from './course-outline.directive';
 import { CourseDurationPipe } from './course-duration.pipe';
+import { OrderByPipe } from './order-by.pipe';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { CourseDurationPipe } from './course-duration.pipe';
     ToolboxComponent,
     SearchComponent,
     CourseOutlineDirective,
-    CourseDurationPipe
+    CourseDurationPipe,
+    OrderByPipe
   ],
   exports: [CoursesListComponent]
 })
