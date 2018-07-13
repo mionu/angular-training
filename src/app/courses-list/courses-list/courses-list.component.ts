@@ -25,7 +25,7 @@ export class CoursesListComponent implements OnInit {
 
   filterCourses(event) {
     const { query } = event;
-    this.courses = this.searchPipe.transform(this.courses, query);
+    this.courses = this.searchPipe.transform(this.coursesService.getCoursesList(), query);
   }
 
   updateCourses(event) {
