@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CoursesListComponent } from './courses-list/courses-list.component';
 import { CourseComponent } from './course/course.component';
-import { ToolboxComponent } from './toolbox/toolbox.component';
 import { SearchComponent } from './search/search.component';
 import { CourseOutlineDirective } from './course-outline.directive';
 import { CourseDurationPipe } from './course-duration.pipe';
 import { OrderByPipe } from './order-by.pipe';
+import { SearchCoursePipe } from './search-course.pipe';
 
 @NgModule({
   imports: [
@@ -17,12 +17,13 @@ import { OrderByPipe } from './order-by.pipe';
   declarations: [
     CoursesListComponent,
     CourseComponent,
-    ToolboxComponent,
     SearchComponent,
     CourseOutlineDirective,
     CourseDurationPipe,
-    OrderByPipe
+    OrderByPipe,
+    SearchCoursePipe
   ],
+  providers: [ SearchCoursePipe ],
   exports: [CoursesListComponent]
 })
 export class CoursesListModule { }
