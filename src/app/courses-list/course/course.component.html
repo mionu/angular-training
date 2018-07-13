@@ -1,7 +1,10 @@
 <div class="card">
   <div class="card-body border rounded" [ngClass]="{'bg-light': course.topRated}" [appCourseOutline]="getCourseOutlineColor()">
-    <h5><a href="#" class=" course-title card-title text-dark">{{course.title | uppercase}}</a><span *ngIf="course.topRated" class="oi oi-star pl-2"></span></h5>
-    <p class="m-0"><span class="oi oi-clock"></span> {{course.duration}} min</p>
+    <h5>
+      <a href="#" class=" course-title card-title text-dark">{{course.title | uppercase}}</a>
+      <img *ngIf="course.topRated" class="ml-1 mb-1" src="/assets/star.svg" width="20" height="20" alt="star">
+    </h5>
+    <p class="m-0"><span class="oi oi-clock"></span> {{course.duration | courseDuration}}</p>
     <p class="text-muted"><span class="oi oi-calendar"></span> {{course.creationDate | date}}</p>
     <p class="card-text">{{course.description}}</p>
     <div class="btn-group">
