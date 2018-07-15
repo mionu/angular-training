@@ -5,6 +5,7 @@ import { CourseComponent } from '../app/courses-list/course/course.component';
 import { Course } from '../app/courses-list/course.model';
 import { CourseOutlineDirective } from '../app/courses-list/course-outline.directive';
 import { CourseDurationPipe } from '../app/courses-list/course-duration.pipe';
+import { Outline, freshCourseDaysLimit } from '../app/courses-list/course.constants';
 
 @Component({
   template: `
@@ -81,7 +82,39 @@ describe('CourseComponent', () => {
     });
 
     it('should return proper border color for upcoming course', () => {
+      component.course = {
+        id: 1,
+        title: 'course',
+        creationDate: moment().add(4, 'days').toDate(),
+        duration: 40,
+        description: ''
+      };
+      fixture.detectChanges();
+      expect(component.getCourseOutlineColor()).toBe(Outline.upcoming);
+    });
 
+    it('should return proper border color for fresh course', () => {
+      component.course = {
+        id: 1,
+        title: 'course',
+        creationDate: moment().subtract(4, 'days').toDate(),
+        duration: 40,
+        description: ''
+      };
+      fixture.detectChanges();
+      expect(component.getCourseOutlineColor()).toBe(Outline.fresh);
+    });
+
+    it('should return proper border color for regular course', () => {
+      component.course = {
+        id: 1,
+        title: 'course',
+        creationDate: moment().subtract(freshCourseDaysLimit + 1, 'days').toDate(),
+        duration: 40,
+        description: ''
+      };
+      fixture.detectChanges();
+      expect(component.getCourseOutlineColor()).toBe(Outline.default);
     });
   });
 

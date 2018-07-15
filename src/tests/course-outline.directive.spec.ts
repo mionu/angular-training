@@ -1,25 +1,36 @@
 import { Component } from '@angular/core';
-import * as moment from 'moment';
+import { TestBed, async } from '@angular/core/testing';
 import { CourseOutlineDirective } from '../app/courses-list/course-outline.directive';
-import { Course } from '../app/courses-list/course.model';
 
 @Component({
-  template: `
-    <app-course
-      [course]="course" (courseChangeEvent)="updateCourses($event)">
-    </app-course>`
+  template: `<div [appCourseOutline]="color">{{color}}</div>`
 })
-class TestHostComponent {
-  course: Course = {
-    id: 1,
-    title: 'testhost course 1',
-    creationDate: moment('03-15-2017', 'MM-DD-YYYY').toDate(),
-    duration: 60,
-    description: 'desc 1'
-  };
-  updateCourses = jasmine.createSpy();
+class TestComponent {
+  color = 'primary';
 }
 
 describe('CourseOutlineDirective', () => {
+  let fixture;
+  let testComponent;
 
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        TestComponent,
+        CourseOutlineDirective
+      ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TestComponent);
+    testComponent = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should set class for component', () => {
+    const el = fixture.nativeElement.querySelector('div');
+    expect(el.className).toContain('border-primary');
+  });
 });

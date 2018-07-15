@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as moment from 'moment';
 import { Course } from '../course.model';
-
-const freshCourseDaysLimit = 14;
+import { Outline, freshCourseDaysLimit } from '../course.constants';
 
 @Component({
   selector: 'app-course',
@@ -27,11 +26,11 @@ export class CourseComponent implements OnInit {
     const dateDiff = moment().diff(this.course.creationDate, 'days');
     switch(true) {
       case dateDiff < 0:
-        return 'primary';
+        return Outline.upcoming;
       case dateDiff < freshCourseDaysLimit:
-        return 'success';
+        return Outline.fresh;
       default:
-        return 'secondary';
+        return Outline.default;
     }
   }
 
