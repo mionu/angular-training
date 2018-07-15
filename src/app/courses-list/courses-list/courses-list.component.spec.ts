@@ -1,7 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import * as moment from 'moment';
 import { CoursesListComponent } from './courses-list.component';
 import { CoursesService } from '../courses.service';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { OrderByPipe } from '../order-by.pipe';
+import { SearchCoursePipe } from '../search-course.pipe';
 
 describe('CoursesListComponent', () => {
   let component: CoursesListComponent;
@@ -10,8 +13,11 @@ describe('CoursesListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CoursesListComponent],
-      providers:[ { provide: CoursesService, useValue: coursesServiceStub } ],
+      declarations: [ CoursesListComponent, OrderByPipe, SearchCoursePipe ],
+      providers:[
+        { provide: CoursesService, useValue: coursesServiceStub },
+        SearchCoursePipe
+      ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
     .compileComponents();
@@ -24,19 +30,19 @@ describe('CoursesListComponent', () => {
       getCoursesList: () => [{
         'id': 1,
         'title': 'course 1',
-        'creationDate': '15 Mar 2017',
+        'creationDate': moment('03-15-2018', 'MM-DD-YYYY').toDate(),
         'duration': 60,
         'description': 'desc 1'
       }, {
         'id': 2,
         'title': 'course 2',
-        'creationDate': '01 Jun 2018',
+        'creationDate': moment('01-06-2018', 'MM-DD-YYYY').toDate(),
         'duration': 80,
         'description': 'desc 2'
       }, {
         'id': 3,
         'title': 'course 3',
-        'creationDate': '11 Jan 2018',
+        'creationDate': moment('01-11-2018', 'MM-DD-YYYY').toDate(),
         'duration': 95,
         'description': 'desc 3'
       }]
@@ -55,9 +61,9 @@ describe('CoursesListComponent', () => {
   });
 
   it('should load more courses', () => {
+    fixture.detectChanges();
     component.loadMore = jasmine.createSpy();
-    const element: HTMLElement = fixture.nativeElement;
-    const button = element.querySelector('button');
+    const button = fixture.nativeElement.querySelector('.load-more');
     button.click();
     expect(component.loadMore).toHaveBeenCalled();
   })

@@ -8,4 +8,4 @@
 <app-course *ngFor="let item of (courses | orderBy:'creationDate')"
   [course]="item" (courseChangeEvent)="updateCourses($event)">
 </app-course>
-<button type="button" *ngIf="this.hasCourses" class="btn btn-outline-secondary btn-lg btn-block" (click)="loadMore()">Load more</button>
+<button type="button" *ngIf="this.hasCourses" class="load-more btn btn-outline-secondary btn-lg btn-block" (click)="loadMore()">Load more</button>

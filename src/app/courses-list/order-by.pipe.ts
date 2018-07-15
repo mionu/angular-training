@@ -2,8 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Course } from './course.model';
 
 @Pipe({
-  name: 'orderBy',
-  pure: false
+  name: 'orderBy'
 })
 export class OrderByPipe implements PipeTransform {
 

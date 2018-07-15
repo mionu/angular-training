@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-
+import { Component, EventEmitter } from '@angular/core';
+import * as moment from 'moment';
 import { CourseComponent } from './course.component';
 import { Course } from '../course.model';
-import { Component, EventEmitter } from '@angular/core';
+import { CourseOutlineDirective } from '../course-outline.directive';
+import { CourseDurationPipe } from '../course-duration.pipe';
 
 @Component({
   template: `
@@ -14,7 +16,7 @@ class TestHostComponent {
   course: Course = {
     id: 1,
     title: 'testhost course 1',
-    creationDate: '15 Mar 2017',
+    creationDate: moment('03-15-2017', 'MM-DD-YYYY').toDate(),
     duration: 60,
     description: 'desc 1'
   };
@@ -26,7 +28,12 @@ describe('CourseComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CourseComponent, TestHostComponent ]
+      declarations: [
+        CourseComponent,
+        TestHostComponent,
+        CourseOutlineDirective,
+        CourseDurationPipe
+      ],
     })
     .compileComponents();
   }));
@@ -47,7 +54,7 @@ describe('CourseComponent', () => {
       const expectedCourse: Course = {
         id: 1,
         title: 'course 1',
-        creationDate: '15 Mar 2017',
+        creationDate: moment('03-15-2017', 'MM-DD-YYYY').toDate(),
         duration: 60,
         description: 'desc 1'
       };
@@ -55,7 +62,7 @@ describe('CourseComponent', () => {
       component.course = expectedCourse;
       fixture.detectChanges();
       const courseTitle = fixture.nativeElement.querySelector('.course-title');
-      expect(courseTitle.textContent).toEqual(expectedCourse.title);
+      expect(courseTitle.textContent.toLowerCase()).toEqual(expectedCourse.title.toLowerCase());
     });
 
     it('should raise delete event', () => {
@@ -63,7 +70,7 @@ describe('CourseComponent', () => {
       component.course = {
         id: 1,
         title: 'course 1',
-        creationDate: '15 Mar 2017',
+        creationDate: moment('03-15-2017', 'MM-DD-YYYY').toDate(),
         duration: 60,
         description: 'desc 1'
       };
@@ -90,7 +97,7 @@ describe('CourseComponent', () => {
     it('should display course title', () => {
       fixture.detectChanges();
       const courseTitle = fixture.nativeElement.querySelector('.course-title');
-      expect(courseTitle.textContent).toEqual('testhost course 1');
+      expect(courseTitle.textContent.toLowerCase()).toEqual('testhost course 1');
     });
 
     it('should raise delete event', () => {
