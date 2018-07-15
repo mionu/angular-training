@@ -6,7 +6,7 @@ import { Course } from './course.model';
 })
 export class OrderByPipe implements PipeTransform {
   transform(courses: Course[], sortParameter: string): Course[] {
-    const sortFunction = typeof courses[0][sortParameter] === 'string' ?
+    const sortFunction = courses.length && typeof courses[0][sortParameter] === 'string' ?
       this.stringComparison : this.defaultComparison;
     return courses.sort((a: Course, b: Course) => {
       return sortFunction(a[sortParameter], b[sortParameter]);
