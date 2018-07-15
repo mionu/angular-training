@@ -1,7 +1,7 @@
-import { CourseOutlineDirective } from './course-outline.directive';
 import { Component } from '@angular/core';
 import * as moment from 'moment';
-import { Course } from './course.model';
+import { CourseOutlineDirective } from '../app/courses-list/course-outline.directive';
+import { Course } from '../app/courses-list/course.model';
 
 @Component({
   template: `

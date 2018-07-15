@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Component, EventEmitter } from '@angular/core';
 import * as moment from 'moment';
-import { CourseComponent } from './course.component';
-import { Course } from '../course.model';
-import { CourseOutlineDirective } from '../course-outline.directive';
-import { CourseDurationPipe } from '../course-duration.pipe';
+import { CourseComponent } from '../app/courses-list/course/course.component';
+import { Course } from '../app/courses-list/course.model';
+import { CourseOutlineDirective } from '../app/courses-list/course-outline.directive';
+import { CourseDurationPipe } from '../app/courses-list/course-duration.pipe';
 
 @Component({
   template: `
@@ -78,6 +78,10 @@ describe('CourseComponent', () => {
       const deleteButton = fixture.nativeElement.querySelector('.delete-button');
       deleteButton.click();
       expect(deleteEvent.event).toEqual('delete');
+    });
+
+    it('should return proper border color for upcoming course', () => {
+
     });
   });
 

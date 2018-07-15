@@ -1,4 +1,4 @@
-import { CourseDurationPipe } from './course-duration.pipe';
+import { CourseDurationPipe } from '../app/courses-list/course-duration.pipe';
 
 describe('CourseDurationPipe', () => {
   it('create an instance', () => {

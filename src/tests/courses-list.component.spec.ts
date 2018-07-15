@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import * as moment from 'moment';
-import { CoursesListComponent } from './courses-list.component';
-import { CoursesService } from '../courses.service';
-import { OrderByPipe } from '../order-by.pipe';
-import { SearchCoursePipe } from '../search-course.pipe';
+import { CoursesListComponent } from '../app/courses-list/courses-list/courses-list.component';
+import { CoursesService } from '../app/courses-list/courses.service';
+import { OrderByPipe } from '../app/courses-list/order-by.pipe';
+import { SearchCoursePipe } from '../app/courses-list/search-course.pipe';
 
 describe('CoursesListComponent', () => {
   let component: CoursesListComponent;

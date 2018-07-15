@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { BreadcrumbsComponent } from './breadcrumbs.component';
+import { BreadcrumbsComponent } from '../app/core/breadcrumbs/breadcrumbs.component';
 
 describe('BreadcrumbsComponent', () => {
   let component: BreadcrumbsComponent;
