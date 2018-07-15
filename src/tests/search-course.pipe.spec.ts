@@ -4,23 +4,23 @@ import { Course } from '../app/courses-list/course.model';
 describe('SearchCoursePipe', () => {
   let pipe: SearchCoursePipe;
   let courses: Course[] = [{
-    'id': 1,
-    'title': 'qwe',
-    'creationDate': new Date(),
-    'duration': 60,
-    'description': 'desc 1'
+    id: 1,
+    title: 'qwe',
+    creationDate: new Date(),
+    duration: 60,
+    description: 'desc 1'
   }, {
-    'id': 2,
-    'title': 'asd',
-    'creationDate': new Date(),
-    'duration': 80,
-    'description': 'desc 2'
+    id: 2,
+    title: 'asd',
+    creationDate: new Date(),
+    duration: 80,
+    description: 'desc 2'
   }, {
-    'id': 3,
-    'title': 'qweasd',
-    'creationDate': new Date(),
-    'duration': 95,
-    'description': 'desc 3'
+    id: 3,
+    title: 'qweasd',
+    creationDate: new Date(),
+    duration: 95,
+    description: 'desc 3'
   }];
 
   beforeEach(() => {

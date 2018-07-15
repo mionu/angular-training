@@ -30,4 +30,16 @@ describe('SearchComponent', () => {
     searchButton.click();
     expect(component.search).toHaveBeenCalled();
   });
+
+  it('should raise search event', () => {
+    let searchEvent;
+    const el = fixture.nativeElement;
+    component.searchEvent.subscribe(e => searchEvent = e);
+    const searchInput = el.querySelector('.search-input');
+    const searchButton = el.querySelector('.search-button');
+    searchInput.value = 'asd';
+    searchInput.dispatchEvent(new Event('input'));
+    searchButton.click();
+    expect(searchEvent.event).toEqual('search');
+  });
 });

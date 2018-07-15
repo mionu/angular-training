@@ -17,7 +17,7 @@ class TestHostComponent {
   course: Course = {
     id: 1,
     title: 'testhost course 1',
-    creationDate: moment('03-15-2017', 'MM-DD-YYYY').toDate(),
+    creationDate: new Date(),
     duration: 60,
     description: 'desc 1'
   };
@@ -51,11 +51,11 @@ describe('CourseComponent', () => {
       expect(component).toBeDefined();
     });
 
-    it('should recieve course object', () => {
+    it('should recieve course object & capitalize course title', () => {
       const expectedCourse: Course = {
         id: 1,
         title: 'course 1',
-        creationDate: moment('03-15-2017', 'MM-DD-YYYY').toDate(),
+        creationDate: new Date(),
         duration: 60,
         description: 'desc 1'
       };
@@ -63,7 +63,7 @@ describe('CourseComponent', () => {
       component.course = expectedCourse;
       fixture.detectChanges();
       const courseTitle = fixture.nativeElement.querySelector('.course-title');
-      expect(courseTitle.textContent.toLowerCase()).toEqual(expectedCourse.title.toLowerCase());
+      expect(courseTitle.textContent).toEqual(expectedCourse.title.toUpperCase());
     });
 
     it('should raise delete event', () => {
@@ -71,7 +71,7 @@ describe('CourseComponent', () => {
       component.course = {
         id: 1,
         title: 'course 1',
-        creationDate: moment('03-15-2017', 'MM-DD-YYYY').toDate(),
+        creationDate: new Date(),
         duration: 60,
         description: 'desc 1'
       };
@@ -89,7 +89,6 @@ describe('CourseComponent', () => {
         duration: 40,
         description: ''
       };
-      fixture.detectChanges();
       expect(component.getCourseOutlineColor()).toBe(Outline.upcoming);
     });
 
@@ -97,7 +96,7 @@ describe('CourseComponent', () => {
       component.course = {
         id: 1,
         title: 'course',
-        creationDate: moment().subtract(4, 'days').toDate(),
+        creationDate: moment().subtract(freshCourseDaysLimit - 1, 'days').toDate(),
         duration: 40,
         description: ''
       };
@@ -141,9 +140,6 @@ describe('CourseComponent', () => {
       const deleteButton = fixture.nativeElement.querySelector('.delete-button');
       deleteButton.click();
       expect(testHost.updateCourses).toHaveBeenCalled();
-    })
-
+    });
 });
-
-
-})
+});
