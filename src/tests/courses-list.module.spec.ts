@@ -1,4 +1,4 @@
-import { CoursesListModule } from './courses-list.module';
+import { CoursesListModule } from '../app/courses-list/courses-list.module';
 
 describe('CoursesListModule', () => {
   let coursesListModule: CoursesListModule;

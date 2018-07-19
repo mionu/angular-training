@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { SearchComponent } from './search.component';
 import { FormsModule } from '@angular/forms';
+import { SearchComponent } from '../app/courses-list/search/search.component';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -30,5 +29,17 @@ describe('SearchComponent', () => {
     const searchButton = fixture.nativeElement.querySelector('button');
     searchButton.click();
     expect(component.search).toHaveBeenCalled();
+  });
+
+  it('should raise search event', () => {
+    let searchEvent;
+    const el = fixture.nativeElement;
+    component.searchEvent.subscribe(e => searchEvent = e);
+    const searchInput = el.querySelector('.search-input');
+    const searchButton = el.querySelector('.search-button');
+    searchInput.value = 'asd';
+    searchInput.dispatchEvent(new Event('input'));
+    searchButton.click();
+    expect(searchEvent.event).toEqual('search');
   });
 });
