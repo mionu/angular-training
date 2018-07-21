@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { User } from 'src/app/core/user.model';
-import { UserService } from 'src/app/core/user.service';
+import { User } from '../user.model';
+import { UserService } from '../authorization.service';
 
 @Component({
   selector: 'app-header',
@@ -8,12 +8,19 @@ import { UserService } from 'src/app/core/user.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  public currentUser: User = null;
+  public userLogin: string = '';
 
   constructor(private userService: UserService) { }
 
   ngOnInit() {
-    this.currentUser = this.userService.getCurrentUser();
+    this.userLogin = this.userService.getUserInfo();
+  }
+
+  onButtonClick() {
+    if(this.userService.isAuthenticated()) {
+      this.userService.logout();
+      this.userLogin = '';
+    }
   }
 
 }
