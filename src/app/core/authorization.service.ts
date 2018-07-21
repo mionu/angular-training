@@ -14,9 +14,7 @@ const users: User[] = [{
 export class UserService {
   currentUser: User = null;
 
-  constructor() {
-    this.currentUser = users[0];
-  }
+  constructor() { }
 
   login({ email, password }) {
     const userIndex = users.findIndex(user => user.email === email && user.password === password);
