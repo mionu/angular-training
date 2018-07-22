@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { UserService } from '../authorization.service';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthorizationService } from '../authorization.service';
 
 @Component({
   selector: 'app-header',
@@ -10,10 +10,10 @@ import { Router } from '@angular/router';
 export class HeaderComponent implements OnInit {
   public userLogin: string = '';
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(private authService: AuthorizationService, private router: Router) { }
 
   ngOnInit() {
-    this.userLogin = this.userService.getUserInfo();
+    this.userLogin = this.authService.getUserInfo();
   }
 
   get isUserInfoVisible() {
@@ -21,8 +21,8 @@ export class HeaderComponent implements OnInit {
   }
 
   onButtonClick() {
-    if(this.userService.isAuthenticated()) {
-      this.userService.logout();
+    if(this.authService.isAuthenticated()) {
+      this.authService.logout();
       this.userLogin = '';
     } else {
       this.router.navigate(['/login']);

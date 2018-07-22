@@ -11,7 +11,7 @@ const users: User[] = [{
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class AuthorizationService {
   currentUser: User = null;
 
   constructor() { }
