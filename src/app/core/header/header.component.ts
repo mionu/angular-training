@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { AuthorizationService } from '../authorization.service';
 
 @Component({
@@ -9,15 +9,29 @@ import { AuthorizationService } from '../authorization.service';
 })
 export class HeaderComponent implements OnInit {
   public userLogin: string = '';
+  private subscription;
 
   constructor(private authService: AuthorizationService, private router: Router) { }
 
   ngOnInit() {
     this.userLogin = this.authService.getUserInfo();
+    this.subscription = this.router.events.subscribe(e => {
+      if(e instanceof NavigationEnd) {
+        this.initUserInfo();
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   get isUserInfoVisible() {
     return !this.router.url.match(/login/gi);
+  }
+
+  initUserInfo() {
+    this.userLogin = this.authService.getUserInfo();
   }
 
   onButtonClick() {

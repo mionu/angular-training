@@ -8,7 +8,6 @@ import { CourseOutlineDirective } from './course-outline.directive';
 import { CourseDurationPipe } from './course-duration.pipe';
 import { OrderByPipe } from './order-by.pipe';
 import { SearchCoursePipe } from './search-course.pipe';
-import { ModalComponent } from '../shared/modal/modal.component';
 
 @NgModule({
   imports: [
@@ -25,6 +24,6 @@ import { ModalComponent } from '../shared/modal/modal.component';
     SearchCoursePipe
   ],
   providers: [ SearchCoursePipe ],
-  exports: [CoursesListComponent]
+  exports: [ CoursesListComponent ]
 })
 export class CoursesListModule { }
