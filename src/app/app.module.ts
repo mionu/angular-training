@@ -29,8 +29,7 @@ const appRoutes: Routes = [
     BrowserModule,
     NgbModule.forRoot(),
     RouterModule.forRoot(
-      appRoutes,
-      { enableTracing: true } // <-- debugging purposes only
+      appRoutes
     ),
     CoreModule,
     CoursesListModule,

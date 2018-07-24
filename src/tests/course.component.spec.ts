@@ -78,7 +78,7 @@ describe('CourseComponent', () => {
       component.courseChangeEvent.subscribe(e => deleteEvent = e);
       const deleteButton = fixture.nativeElement.querySelector('.delete-button');
       deleteButton.click();
-      expect(deleteEvent.event).toEqual('delete');
+      expect(deleteEvent.type).toEqual('delete');
     });
 
     it('should return proper border color for upcoming course', () => {

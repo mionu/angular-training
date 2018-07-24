@@ -37,16 +37,20 @@ export class CoursesListComponent implements OnInit {
     switch(event.type) {
       case 'delete': {
         const courseToDelete = this.coursesService.getCourseById({ id: event.courseId });
-        const modalRef = this.modalService.open(ModalComponent);
-        modalRef.componentInstance.courseTitle = courseToDelete.title;
-        modalRef.result.then(res => {
-          if(res === 'yes') {
-            this.coursesService.removeCourse({ id: event.courseId });
-          }
-        });
+        this.deleteCourse(courseToDelete);
         break;
       }
     }
+  }
+
+  deleteCourse(course) {
+    const modalRef = this.modalService.open(ModalComponent);
+    modalRef.componentInstance.courseTitle = course.title;
+    modalRef.result.then(res => {
+      if(res === 'yes') {
+        this.coursesService.removeCourse({ id: course.id });
+      }
+    });
   }
 
   loadMore() {
