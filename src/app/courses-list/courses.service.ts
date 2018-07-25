@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Course } from './course.model';
 import * as moment from 'moment';
+import { List } from 'immutable';
+import { Course } from './course.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CoursesService {
-  coursesList: Course[];
+  public coursesList: List<Course>;
 
   constructor() {
     this.coursesList = this.requestCourses();
   }
 
-  requestCourses(): Course[] {
-    return [{
+  requestCourses(): List<Course> {
+    return List([{
       id: 1,
       title: 'course 1',
       creationDate: moment('07-10-2018', 'MM-DD-YYYY').toDate(),
@@ -32,32 +33,32 @@ export class CoursesService {
       duration: 45,
       topRated: true,
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-    }];
+    }]);
   }
 
   private getCoursePosition({ id }) {
     return this.coursesList.findIndex(course => course.id === id);
   }
 
-  getCoursesList(): Course[] {
+  getCoursesList(): List<Course> {
     return this.coursesList;
   }
 
-  createCourse(newCourse) {
-    this.coursesList = this.coursesList.concat([newCourse]);
+  createCourse(newCourse: Course): List<Course> {
+   return this.coursesList.push(newCourse);
   }
 
   getCourseById({ id }): Course {
     return this.coursesList.find(course => course.id === id);
   }
 
-  updateCourse(updatedCourse) {
+  updateCourse(updatedCourse: Course): List<Course> {
     const courseIndex = this.getCoursePosition({ id: updatedCourse.id });
-    this.coursesList.splice(courseIndex, 1, updatedCourse);
+    return this.coursesList.splice(courseIndex, 1, updatedCourse);
   }
 
-  removeCourse({ id }) {
+  removeCourse({ id }): List<Course> {
     const courseIndex = this.getCoursePosition({ id });
-    this.coursesList.splice(courseIndex, 1);
+    return this.coursesList.delete(courseIndex);
   }
 }

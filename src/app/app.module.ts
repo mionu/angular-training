@@ -9,9 +9,11 @@ import { ModalComponent } from './shared/modal/modal.component';
 import { CoursesListComponent } from './courses-list/courses-list/courses-list.component';
 import { LoginPageComponent } from './login-page/login-page/login-page.component';
 import { LoginPageModule } from './login-page/login-page.module';
+import { CoursePageComponent } from './course-page/course-page/course-page.component';
 
 const appRoutes: Routes = [
   { path: 'courses-list', component: CoursesListComponent },
+  { path: 'courses-list/course/:id', component: CoursePageComponent },
   { path: 'login',      component: LoginPageComponent },
   { path: '',
     redirectTo: '/courses-list',

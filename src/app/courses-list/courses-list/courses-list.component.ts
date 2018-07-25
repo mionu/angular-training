@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { List } from 'immutable';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Course } from '../course.model';
 import { CoursesService } from '../courses.service';
 import { SearchCoursePipe } from '../search-course.pipe';
 import { ModalComponent } from '../../shared/modal/modal.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-courses-list',
@@ -12,12 +13,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   providers: [ NgbModal ]
 })
 export class CoursesListComponent implements OnInit {
-  public courses: Course[];
+  public courses: List<Course>;
 
   constructor(private coursesService: CoursesService,
     private searchPipe: SearchCoursePipe,
     private modalService: NgbModal) {
-    this.courses = [];
+    this.courses = null;;
   }
 
   ngOnInit() {
@@ -25,12 +26,12 @@ export class CoursesListComponent implements OnInit {
   }
 
   get hasCourses() {
-    return this.courses.length > 0;
+    return this.courses.size > 0;
   }
 
   filterCourses(event) {
     const { query } = event;
-    this.courses = this.searchPipe.transform(this.coursesService.getCoursesList(), query);
+    this.courses = this.searchPipe.transform(this.coursesService.coursesList, query);
   }
 
   updateCourses(event) {
@@ -48,7 +49,7 @@ export class CoursesListComponent implements OnInit {
     modalRef.componentInstance.courseTitle = course.title;
     modalRef.result.then(res => {
       if(res === 'yes') {
-        this.coursesService.removeCourse({ id: course.id });
+        this.courses = this.coursesService.removeCourse({ id: course.id });
       }
     });
   }

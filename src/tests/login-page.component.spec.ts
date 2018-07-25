@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { LoginPageComponent } from 'src/app/login-page/login-page/login-page.component';
+import { LoginPageComponent } from '../app/login-page/login-page/login-page.component';
 
 describe('LoginPageComponent', () => {
   let component: LoginPageComponent;
