@@ -4,7 +4,7 @@ import * as moment from 'moment';
 import { CourseComponent } from '../app/courses-list/course/course.component';
 import { Course } from '../app/courses-list/course.model';
 import { CourseOutlineDirective } from '../app/courses-list/course-outline.directive';
-import { CourseDurationPipe } from '../app/courses-list/course-duration.pipe';
+import { CourseDurationPipe } from '../app/shared/course-duration.pipe';
 import { Outline, freshCourseDaysLimit } from '../app/courses-list/course.constants';
 
 @Component({

@@ -1,4 +1,4 @@
-import { CourseDurationPipe } from '../app/courses-list/course-duration.pipe';
+import { CourseDurationPipe } from '../app/shared/course-duration.pipe';
 import { Component } from '@angular/core';
 import { TestBed, async } from '@angular/core/testing';
 

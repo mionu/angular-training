@@ -24,8 +24,7 @@ const appRoutes: Routes = [
 
 @NgModule({
   declarations: [
-    AppComponent,
-    ModalComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
