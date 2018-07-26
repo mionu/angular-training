@@ -1,20 +1,41 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CoreModule } from './core/core.module';
-
 import { AppComponent } from './app.component';
 import { CoursesListModule } from './courses-list/courses-list.module';
+import { ModalComponent } from './shared/modal/modal.component';
+import { CoursesListComponent } from './courses-list/courses-list/courses-list.component';
+import { LoginPageComponent } from './login-page/login-page/login-page.component';
+import { LoginPageModule } from './login-page/login-page.module';
+
+const appRoutes: Routes = [
+  { path: 'courses-list', component: CoursesListComponent },
+  { path: 'login',      component: LoginPageComponent },
+  { path: '',
+    redirectTo: '/courses-list',
+    pathMatch: 'full'
+  },
+  { path: '**', component: CoursesListComponent }
+];
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
+    NgbModule.forRoot(),
+    RouterModule.forRoot(
+      appRoutes
+    ),
     CoreModule,
-    CoursesListModule
+    CoursesListModule,
+    LoginPageModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  entryComponents: [ ModalComponent ],
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }

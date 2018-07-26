@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { User } from 'src/app/core/user.model';
-import { UserService } from 'src/app/core/user.service';
+import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { AuthorizationService } from '../authorization.service';
 
 @Component({
   selector: 'app-header',
@@ -8,12 +8,39 @@ import { UserService } from 'src/app/core/user.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  public currentUser: User = null;
+  public userLogin: string = '';
+  private subscription;
 
-  constructor(private userService: UserService) { }
+  constructor(private authService: AuthorizationService, private router: Router) { }
 
   ngOnInit() {
-    this.currentUser = this.userService.getCurrentUser();
+    this.userLogin = this.authService.getUserInfo();
+    this.subscription = this.router.events.subscribe(e => {
+      if(e instanceof NavigationEnd) {
+        this.initUserInfo();
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  get isUserInfoVisible() {
+    return !this.router.url.match(/login/gi);
+  }
+
+  initUserInfo() {
+    this.userLogin = this.authService.getUserInfo();
+  }
+
+  onButtonClick() {
+    if(this.authService.isAuthenticated()) {
+      this.authService.logout();
+      this.userLogin = '';
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
 
 }

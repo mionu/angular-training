@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import * as moment from 'moment';
+import { FormsModule } from '@angular/forms';
+import { NgbModalStack } from '@ng-bootstrap/ng-bootstrap/modal/modal-stack';
 import { CoursesListComponent } from '../app/courses-list/courses-list/courses-list.component';
 import { CoursesService } from '../app/courses-list/courses.service';
 import { OrderByPipe } from '../app/courses-list/order-by.pipe';
 import { SearchCoursePipe } from '../app/courses-list/search-course.pipe';
 import { SearchComponent } from '../app/courses-list/search/search.component';
-import { FormsModule } from '@angular/forms';
 
 describe('CoursesListComponent', () => {
   let component: CoursesListComponent;
@@ -24,7 +24,8 @@ describe('CoursesListComponent', () => {
       imports: [ FormsModule ],
       providers:[
         { provide: CoursesService, useValue: coursesServiceStub },
-        SearchCoursePipe
+        SearchCoursePipe,
+        NgbModalStack
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })

@@ -12,14 +12,13 @@ export class CourseComponent implements OnInit {
   @Input() public course: Course;
   @Output() public courseChangeEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor() {
-  }
+  constructor() { }
 
   ngOnInit() {
   }
 
   deleteCourse() {
-    this.courseChangeEvent.emit({ event: 'delete', courseId: this.course.id });
+    this.courseChangeEvent.emit({ type: 'delete', courseId: this.course.id });
   }
 
   getCourseOutlineColor() {

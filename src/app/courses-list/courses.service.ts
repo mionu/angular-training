@@ -6,12 +6,14 @@ import * as moment from 'moment';
   providedIn: 'root'
 })
 export class CoursesService {
+  coursesList: Course[];
 
-  constructor() { }
+  constructor() {
+    this.coursesList = this.requestCourses();
+  }
 
-  public getCoursesList(): Course[] {
-    // return [];
-    return [ {
+  requestCourses(): Course[] {
+    return [{
       id: 1,
       title: 'course 1',
       creationDate: moment('07-10-2018', 'MM-DD-YYYY').toDate(),
@@ -31,5 +33,31 @@ export class CoursesService {
       topRated: true,
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
     }];
+  }
+
+  private getCoursePosition({ id }) {
+    return this.coursesList.findIndex(course => course.id === id);
+  }
+
+  getCoursesList(): Course[] {
+    return this.coursesList;
+  }
+
+  createCourse(newCourse) {
+    this.coursesList = this.coursesList.concat([newCourse]);
+  }
+
+  getCourseById({ id }): Course {
+    return this.coursesList.find(course => course.id === id);
+  }
+
+  updateCourse(updatedCourse) {
+    const courseIndex = this.getCoursePosition({ id: updatedCourse.id });
+    this.coursesList.splice(courseIndex, 1, updatedCourse);
+  }
+
+  removeCourse({ id }) {
+    const courseIndex = this.getCoursePosition({ id });
+    this.coursesList.splice(courseIndex, 1);
   }
 }

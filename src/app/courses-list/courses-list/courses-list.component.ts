@@ -2,16 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { Course } from '../course.model';
 import { CoursesService } from '../courses.service';
 import { SearchCoursePipe } from '../search-course.pipe';
+import { ModalComponent } from '../../shared/modal/modal.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-courses-list',
   templateUrl: './courses-list.component.html',
-  styleUrls: ['./courses-list.component.css']
+  styleUrls: ['./courses-list.component.css'],
+  providers: [ NgbModal ]
 })
 export class CoursesListComponent implements OnInit {
   public courses: Course[];
 
-  constructor(private coursesService: CoursesService, private searchPipe: SearchCoursePipe) {
+  constructor(private coursesService: CoursesService,
+    private searchPipe: SearchCoursePipe,
+    private modalService: NgbModal) {
     this.courses = [];
   }
 
@@ -29,7 +34,23 @@ export class CoursesListComponent implements OnInit {
   }
 
   updateCourses(event) {
-    console.log(event);
+    switch(event.type) {
+      case 'delete': {
+        const courseToDelete = this.coursesService.getCourseById({ id: event.courseId });
+        this.deleteCourse(courseToDelete);
+        break;
+      }
+    }
+  }
+
+  deleteCourse(course) {
+    const modalRef = this.modalService.open(ModalComponent);
+    modalRef.componentInstance.courseTitle = course.title;
+    modalRef.result.then(res => {
+      if(res === 'yes') {
+        this.coursesService.removeCourse({ id: course.id });
+      }
+    });
   }
 
   loadMore() {

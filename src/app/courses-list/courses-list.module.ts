@@ -24,6 +24,6 @@ import { SearchCoursePipe } from './search-course.pipe';
     SearchCoursePipe
   ],
   providers: [ SearchCoursePipe ],
-  exports: [CoursesListComponent]
+  exports: [ CoursesListComponent ]
 })
 export class CoursesListModule { }

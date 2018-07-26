@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from 'src/app/core/user.service';
-import { User } from 'src/app/core/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-breadcrumbs',
@@ -8,8 +7,12 @@ import { User } from 'src/app/core/user.model';
   styleUrls: ['./breadcrumbs.component.css']
 })
 export class BreadcrumbsComponent implements OnInit {
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() { }
+
+  get isVisible() {
+    return !this.router.url.match(/login/gi);
+  }
 
 }

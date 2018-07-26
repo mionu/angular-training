@@ -1,17 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { HeaderComponent } from '../app/core/header/header.component';
-import { UserService } from '../app/core/user.service';
-import { User } from '../app/core/user.model';
+import { AuthorizationService } from '../app/core/authorization.service';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
-  let userServiceStub: Partial<UserService>;
+  let authServiceStub: Partial<AuthorizationService>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ HeaderComponent ],
-      providers:[ { provide: UserService, useValue: userServiceStub } ]
+      providers: [ { provide: AuthorizationService, useValue: authServiceStub } ],
+      imports: [ RouterTestingModule ]
     })
     .compileComponents();
   }));
@@ -19,13 +20,9 @@ describe('HeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
-    userServiceStub = {
-      getCurrentUser: () => ({
-        id: 1,
-        firstName: 'Jane',
-        lastName: 'Doe'
-      })
-    };
+    authServiceStub = {
+      getUserInfo: () => 'janedoe'
+    }
   });
 
   it('should create', () => {
@@ -33,16 +30,15 @@ describe('HeaderComponent', () => {
   });
 
   it('should load current user name on init', () => {
-    expect(component.currentUser).toBeNull();
     component.ngOnInit();
-    const currentUser = TestBed.get(UserService).getCurrentUser();
-    expect(component.currentUser).toBeDefined();
-    expect(component.currentUser.firstName).toEqual(currentUser.firstName);
+    const currentUser = TestBed.get(AuthorizationService).getUserInfo();
+    expect(component.userLogin).toBeDefined();
+    expect(component.userLogin).toEqual(currentUser);
   });
 
-  it('should display current user name', () => {
+  it('should display current user login', () => {
     fixture.detectChanges();
     const userName = fixture.nativeElement.querySelector('.user-name');
-    expect(userName.textContent).toEqual('Jane Doe');
+    expect(userName.textContent).toEqual('janedoe');
   });
 });
