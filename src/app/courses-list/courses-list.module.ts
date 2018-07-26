@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { CoursesListComponent } from './courses-list/courses-list.component';
 import { CourseComponent } from './course/course.component';
 import { SearchComponent } from './search/search.component';
@@ -13,6 +14,7 @@ import { SharedModule } from '../shared/shared.module';
   imports: [
     CommonModule,
     FormsModule,
+    RouterModule,
     SharedModule
   ],
   declarations: [

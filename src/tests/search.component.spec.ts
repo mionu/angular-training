@@ -40,6 +40,6 @@ describe('SearchComponent', () => {
     searchInput.value = 'asd';
     searchInput.dispatchEvent(new Event('input'));
     searchButton.click();
-    expect(searchEvent.event).toEqual('search');
+    expect(searchEvent.type).toEqual('search');
   });
 });

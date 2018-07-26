@@ -1,5 +1,6 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Component, EventEmitter } from '@angular/core';
+import { TestBed, async } from '@angular/core/testing';
+import { Component } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
 import * as moment from 'moment';
 import { CourseComponent } from '../app/courses-list/course/course.component';
 import { Course } from '../app/courses-list/course.model';
@@ -35,6 +36,7 @@ describe('CourseComponent', () => {
         CourseOutlineDirective,
         CourseDurationPipe
       ],
+      imports: [ RouterTestingModule ]
     })
     .compileComponents();
   }));

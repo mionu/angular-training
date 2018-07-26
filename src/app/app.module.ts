@@ -14,6 +14,7 @@ import { CoursePageComponent } from './course-page/course-page/course-page.compo
 const appRoutes: Routes = [
   { path: 'courses-list', component: CoursesListComponent },
   { path: 'courses-list/course/:id', component: CoursePageComponent },
+  { path: 'courses-list/course/new', component: CoursePageComponent },
   { path: 'login',      component: LoginPageComponent },
   { path: '',
     redirectTo: '/courses-list',

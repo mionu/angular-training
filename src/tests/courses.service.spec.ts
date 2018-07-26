@@ -22,7 +22,7 @@ describe('CoursesService', () => {
       description: ''
     };
     service.createCourse(newCourse);
-    expect(service.coursesList.length).toBe(4);
+    expect(service.coursesList.size).toBe(4);
   });
 
   it('should get course by id', () => {
@@ -35,7 +35,7 @@ describe('CoursesService', () => {
       id: 3,
       title: 'new course title',
       duration: 40,
-      createCourse: new Date(),
+      creationDate: new Date(),
       description: ''
     };
     service.updateCourse(newCourse);
@@ -44,6 +44,6 @@ describe('CoursesService', () => {
 
   it('shoud remove course', () => {
     service.removeCourse({ id: 2 });
-    expect(service.coursesList.length).toBe(2);
+    expect(service.coursesList.size).toBe(2);
   });
 });

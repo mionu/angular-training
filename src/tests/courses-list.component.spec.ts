@@ -1,12 +1,34 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { List } from 'immutable';
 import { NgbModalStack } from '@ng-bootstrap/ng-bootstrap/modal/modal-stack';
 import { CoursesListComponent } from '../app/courses-list/courses-list/courses-list.component';
 import { CoursesService } from '../app/courses-list/courses.service';
 import { OrderByPipe } from '../app/courses-list/order-by.pipe';
 import { SearchCoursePipe } from '../app/courses-list/search-course.pipe';
 import { SearchComponent } from '../app/courses-list/search/search.component';
+
+const coursesList = List([{
+  id: 1,
+  title: 'qwe',
+  creationDate: new Date(),
+  duration: 60,
+  description: 'desc 1'
+}, {
+  id: 2,
+  title: 'asd',
+  creationDate: new Date(),
+  duration: 80,
+  description: 'desc 2'
+}, {
+  id: 3,
+  title: 'qweasd',
+  creationDate: new Date(),
+  duration: 95,
+  description: 'desc 3'
+}]);
 
 describe('CoursesListComponent', () => {
   let component: CoursesListComponent;
@@ -21,7 +43,7 @@ describe('CoursesListComponent', () => {
         OrderByPipe,
         SearchCoursePipe
       ],
-      imports: [ FormsModule ],
+      imports: [ FormsModule, RouterTestingModule ],
       providers:[
         { provide: CoursesService, useValue: coursesServiceStub },
         SearchCoursePipe,
@@ -36,25 +58,8 @@ describe('CoursesListComponent', () => {
     fixture = TestBed.createComponent(CoursesListComponent);
     component = fixture.componentInstance;
     coursesServiceStub = {
-      getCoursesList: () => [{
-        id: 1,
-        title: 'qwe',
-        creationDate: new Date(),
-        duration: 60,
-        description: 'desc 1'
-      }, {
-        id: 2,
-        title: 'asd',
-        creationDate: new Date(),
-        duration: 80,
-        description: 'desc 2'
-      }, {
-        id: 3,
-        title: 'qweasd',
-        creationDate: new Date(),
-        duration: 95,
-        description: 'desc 3'
-      }]
+      getCoursesList: () => coursesList,
+      coursesList: coursesList
     };
   });
 
@@ -64,9 +69,9 @@ describe('CoursesListComponent', () => {
 
   it('should load courses on init', () => {
     expect(component.courses).toBeDefined();
-    expect(component.courses.length).toEqual(0);
+    expect(component.courses).toBeNull();
     component.ngOnInit();
-    expect(component.courses.length).toEqual(3);
+    expect(component.courses.size).toEqual(3);
   });
 
   it('should load more courses', () => {
@@ -86,7 +91,7 @@ describe('CoursesListComponent', () => {
     searchInput.dispatchEvent(new Event('input'));
     searchButton.click();
 
-    expect(component.courses.length).toBe(2);
-    expect(component.courses[0].title).toContain('asd');
+    expect(component.courses.size).toBe(2);
+    expect(component.courses.get(0).title).toContain('asd');
   });
 });

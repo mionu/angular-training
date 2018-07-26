@@ -8,8 +8,12 @@ import { Course } from './course.model';
 export class SearchCoursePipe implements PipeTransform {
 
   transform(courses: List<Course>, query: string): List<Course> {
-    const regexpQuery = new RegExp(query, 'i');
-    return courses.filter(course => regexpQuery.test(course.title));
+    if(courses.size > 0) {
+      const regexpQuery = new RegExp(query, 'i');
+      const searchResults = courses.filter(course => regexpQuery.test(course.title)).toList();
+      return searchResults;
+    }
+    return List([]);
   }
 
 }

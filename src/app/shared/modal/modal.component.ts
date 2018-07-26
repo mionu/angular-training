@@ -10,5 +10,4 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class ModalComponent {
   courseTitle: string;
   constructor(private activeModal: NgbActiveModal) {}
-
 }

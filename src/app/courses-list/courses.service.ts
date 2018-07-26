@@ -8,9 +8,11 @@ import { Course } from './course.model';
 })
 export class CoursesService {
   public coursesList: List<Course>;
+  public nextCourseId: number;
 
   constructor() {
     this.coursesList = this.requestCourses();
+    this.nextCourseId = this.coursesList.size + 1;
   }
 
   requestCourses(): List<Course> {
@@ -45,7 +47,11 @@ export class CoursesService {
   }
 
   createCourse(newCourse: Course): List<Course> {
-   return this.coursesList.push(newCourse);
+    if (!newCourse.id) {
+      newCourse.id = this.nextCourseId++;
+    }
+    this.coursesList = this.coursesList.push(newCourse);
+    return this.coursesList;
   }
 
   getCourseById({ id }): Course {
@@ -54,11 +60,13 @@ export class CoursesService {
 
   updateCourse(updatedCourse: Course): List<Course> {
     const courseIndex = this.getCoursePosition({ id: updatedCourse.id });
-    return this.coursesList.splice(courseIndex, 1, updatedCourse);
+    this.coursesList = this.coursesList.splice(courseIndex, 1, updatedCourse).toList();
+    return this.coursesList;
   }
 
   removeCourse({ id }): List<Course> {
     const courseIndex = this.getCoursePosition({ id });
-    return this.coursesList.delete(courseIndex);
+    this.coursesList = this.coursesList.delete(courseIndex);
+    return this.coursesList;
   }
 }

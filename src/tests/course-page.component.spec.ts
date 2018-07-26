@@ -1,5 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 import { CoursePageComponent } from '../app/course-page/course-page/course-page.component';
+import { SharedModule } from '../app/shared/shared.module';
 
 describe('CoursePageComponent', () => {
   let component: CoursePageComponent;
@@ -7,7 +10,8 @@ describe('CoursePageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CoursePageComponent ]
+      declarations: [ CoursePageComponent ],
+      imports: [ FormsModule, RouterTestingModule, SharedModule ]
     })
     .compileComponents();
   }));

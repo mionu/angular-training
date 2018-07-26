@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { List } from 'immutable';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Course } from '../course.model';
@@ -15,7 +16,10 @@ import { ModalComponent } from '../../shared/modal/modal.component';
 export class CoursesListComponent implements OnInit {
   public courses: List<Course>;
 
-  constructor(private coursesService: CoursesService,
+  constructor(
+    private coursesService: CoursesService,
+    private router: Router,
+    private route: ActivatedRoute,
     private searchPipe: SearchCoursePipe,
     private modalService: NgbModal) {
     this.courses = null;;
@@ -26,7 +30,11 @@ export class CoursesListComponent implements OnInit {
   }
 
   get hasCourses() {
-    return this.courses.size > 0;
+    return this.courses && this.courses.size > 0;
+  }
+
+  newCourse() {
+    this.router.navigate(['./course/new'], { relativeTo: this.route });
   }
 
   filterCourses(event) {

@@ -1,9 +1,10 @@
 import { SearchCoursePipe } from '../app/courses-list/search-course.pipe';
 import { Course } from '../app/courses-list/course.model';
+import { List } from 'immutable';
 
 describe('SearchCoursePipe', () => {
   let pipe: SearchCoursePipe;
-  let courses: Course[] = [{
+  let courses: List<Course> = List([{
     id: 1,
     title: 'qwe',
     creationDate: new Date(),
@@ -21,7 +22,7 @@ describe('SearchCoursePipe', () => {
     creationDate: new Date(),
     duration: 95,
     description: 'desc 3'
-  }];
+  }]);
 
   beforeEach(() => {
     pipe = new SearchCoursePipe();
@@ -33,13 +34,13 @@ describe('SearchCoursePipe', () => {
 
   it('should return all elements matching the query', () => {
     const res = pipe.transform(courses, 'qwe');
-    expect(res.length).toBe(2);
-    expect(res[0].title.toLowerCase()).toContain('qwe');
+    expect(res.size).toBe(2);
+    expect(res.get(0).title.toLowerCase()).toContain('qwe');
   });
 
   it('should not be case specific', () => {
     const res = pipe.transform(courses, 'ASd');
-    expect(res.length).toBe(2);
-    expect(res[0].title.toLowerCase()).toContain('asd');
+    expect(res.size).toBe(2);
+    expect(res.get(0).title.toLowerCase()).toContain('asd');
   });
 });
