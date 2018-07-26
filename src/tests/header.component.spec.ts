@@ -20,6 +20,8 @@ describe('HeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
+    // @ts-ignore
+    component.subscription = { unsubscribe: jasmine.createSpy() };
     authServiceStub = {
       getUserInfo: () => 'janedoe'
     }
