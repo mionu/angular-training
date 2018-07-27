@@ -8,10 +8,13 @@ import { PageNotFoundComponent } from 'src/app/shared/page-not-found/page-not-fo
 import { RouterPaths } from './app-routing.constants';
 
 const appRoutes: Routes = [
-  { path: RouterPaths.COURSES, component: CoursesListComponent },
-  { path: `${RouterPaths.COURSES}/:id`, component: CoursePageComponent },
-  { path: RouterPaths.NEW_COURSE, component: CoursePageComponent },
-  { path: RouterPaths.LOGIN,      component: LoginPageComponent },
+  { path: RouterPaths.COURSES, component: CoursesListComponent,
+    data: { breadcrumb: [{ label: 'Courses'}] } },
+  { path: RouterPaths.NEW_COURSE, component: CoursePageComponent,
+    data: { breadcrumb: [{ label: 'Courses', url: RouterPaths.COURSES }, { label: 'New course'}] } },
+  { path: `${RouterPaths.COURSES}/:id`, component: CoursePageComponent,
+    data: { breadcrumb: [{ label: 'Courses', url: RouterPaths.COURSES }, { label: 'Course details'}] }},
+  { path: RouterPaths.LOGIN, component: LoginPageComponent },
   { path: '',
     redirectTo: `/${RouterPaths.COURSES}`,
     pathMatch: 'full'

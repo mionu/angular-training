@@ -9,7 +9,7 @@
   </div>
   <div class="form-group col-md-4">
     <label>Date</label>
-    <input [(ngModel)]="course.creationDate" type="date" name="courseDate" class="form-control">
+    <input [ngModel]="course.creationDate | date:'y-MM-dd'" (ngModelChange)="course.creationDate = $event" type="date" name="courseDate" class="form-control">
   </div>
   <div class="col-md-3 mb-3">
     <label>Duration</label>

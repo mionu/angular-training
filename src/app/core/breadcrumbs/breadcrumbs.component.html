@@ -1,5 +1,8 @@
 <nav *ngIf="this.isVisible" aria-label="breadcrumb" class="border-top border-bottom">
   <ol class="breadcrumb bg-light m-0">
-    <li class="breadcrumb-item active" aria-current="page">Courses</li>
+    <li *ngFor="let item of breadcrumbs; let last = last" class="breadcrumb-item" [ngClass]="{active: last}" >
+      <a *ngIf="!last" [routerLink]="[item.url || '']">{{item.label}}</a>
+      <span *ngIf="last">{{item.label}}</span>
+    </li>
   </ol>
 </nav>

@@ -29,7 +29,6 @@ export class AuthorizationService {
   logout() {
     this.currentUser = null;
     localStorage.removeItem('email');
-    console.log('logged out');
   }
 
   isAuthenticated() {
