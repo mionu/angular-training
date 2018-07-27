@@ -44,11 +44,7 @@ export class CoursePageComponent implements OnInit {
 
   saveCourse() {
     this.service.createCourse(this.course);
-    this.router.navigate(['/courses-list']);
-  }
-
-  cancel() {
-    this.router.navigate(['/courses-list']);
+    this.router.navigate(['/courses']);
   }
 
 }

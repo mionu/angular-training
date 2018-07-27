@@ -1,6 +1,6 @@
 <nav class="navbar navbar-light bg-light">
   <app-search (searchEvent)="filterCourses($event)"></app-search>
-  <button class="btn btn-outline-primary my-2 my-sm-0" (click)="newCourse()"><span class="oi oi-plus mr-2"></span>Add course</button>
+  <button class="btn btn-outline-primary my-2 my-sm-0" routerLink="/courses/new"><span class="oi oi-plus mr-2"></span>Add course</button>
 </nav>
 
 <div *ngIf="!this.hasCourses" class="alert alert-secondary">No data, feel free to add new course</div>

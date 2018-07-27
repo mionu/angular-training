@@ -1,7 +1,7 @@
 <div class="card">
   <div class="card-body border rounded" [ngClass]="{'bg-light': course.topRated}" [appCourseOutline]="getCourseOutlineColor()">
     <h5>
-      <a [routerLink]="['./course', course.id]" class=" course-title card-title text-dark">{{course.title | uppercase}}</a>
+      <a [routerLink]="['/courses', course.id]" class=" course-title card-title text-dark">{{course.title | uppercase}}</a>
       <img *ngIf="course.topRated" class="ml-1 mb-1" src="/assets/star.svg" width="20" height="20" alt="star">
     </h5>
     <p class="m-0"><span class="oi oi-clock mr-2"></span>{{course.duration | courseDuration}}</p>
