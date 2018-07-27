@@ -18,7 +18,7 @@ export class LoginPageComponent implements OnInit {
 
   login() {
     if(this.authService.login({ email: this.email, password: this.password })) {
-      this.router.navigate(['/courses-list']);
+      this.router.navigate(['/courses']);
     } else {
       console.error('wrong login or password');
     }

@@ -4,7 +4,7 @@
     Angular Training
   </a>
   <div *ngIf="this.isUserInfoVisible" class="form-inline">
-    <a href="#" class="user-name navbar-text mr-sm-2">{{userLogin}}</a>
+    <a href="#" class="user-name font-weight-bold navbar-text mr-sm-2">{{userLogin}}</a>
     <button class="btn my-2 my-sm-0"
       (click)="onButtonClick()"
       [ngClass]="{'btn-outline-danger': userLogin, 'btn-outline-success': !userLogin}">
