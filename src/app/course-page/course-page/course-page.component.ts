@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Course } from '../../courses-list/course.model';
 import { CoursesService } from '../../courses-list/courses.service';
+import { RouterPaths } from '../../app-routing/app-routing.constants';
 
 @Component({
   selector: 'app-course-page',
@@ -43,8 +44,10 @@ export class CoursePageComponent implements OnInit {
   }
 
   saveCourse() {
-    this.service.createCourse(this.course);
-    this.router.navigate(['/courses']);
+    this.course.id ?
+      this.service.updateCourse(this.course) :
+      this.service.createCourse(this.course);
+    this.router.navigate([RouterPaths.COURSES]);
   }
 
 }
