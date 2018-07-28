@@ -1,20 +1,20 @@
 <form (ngSubmit)="saveCourse()" class="container my-2">
   <div class="form-group col-md-4">
     <label>Title</label>
-    <input [(ngModel)]="course.title" type="text" name="courseTitle" class="form-control">
+    <input [(ngModel)]="course.title" type="text" required name="courseTitle" class="form-control">
   </div>
   <div class="form-group col-md-12">
     <label>Description</label>
-    <textarea [(ngModel)]="course.description" name="courseDesc" class="form-control" rows="3"></textarea>
+    <textarea [(ngModel)]="course.description" required name="courseDesc" class="form-control" rows="3"></textarea>
   </div>
   <div class="form-group col-md-4">
     <label>Date</label>
-    <input [ngModel]="course.creationDate | date:'y-MM-dd'" (ngModelChange)="course.creationDate = $event" type="date" name="courseDate" class="form-control">
+    <input [ngModel]="course.creationDate | date:'y-MM-dd'" required (ngModelChange)="course.creationDate = $event" type="date" name="courseDate" class="form-control">
   </div>
   <div class="col-md-3 mb-3">
     <label>Duration</label>
     <div class="input-group">
-      <input [(ngModel)]="course.duration" type="text" name="courseDuration" class="form-control">
+      <input [(ngModel)]="course.duration" type="text" required name="courseDuration" class="form-control">
       <div *ngIf="course.duration" class="input-group-append">
         <span class="input-group-text">{{course && course.duration | courseDuration}}</span>
       </div>
@@ -22,6 +22,6 @@
   </div>
   <div class="btn-group col-md-3">
     <button type="submit" class="btn save-btn btn-outline-primary">save</button>
-    <button type="button" routerLink="/courses" class="delete-button btn btn-outline-danger">cancel</button>
+    <button type="button" (click)="cancel()" class="delete-button btn btn-outline-danger">cancel</button>
   </div>
 </form>
