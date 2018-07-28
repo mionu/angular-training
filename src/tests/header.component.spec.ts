@@ -20,22 +20,14 @@ describe('HeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
-    // @ts-ignore
-    component.subscription = { unsubscribe: jasmine.createSpy() };
     authServiceStub = {
-      getUserInfo: () => 'janedoe'
+      getUserInfo: () => 'janedoe',
+      isAuthenticated: () => true
     }
   });
 
   it('should create', () => {
     expect(component).toBeDefined();
-  });
-
-  it('should load current user name on init', () => {
-    component.ngOnInit();
-    const currentUser = TestBed.get(AuthorizationService).getUserInfo();
-    expect(component.userLogin).toBeDefined();
-    expect(component.userLogin).toEqual(currentUser);
   });
 
   it('should display current user login', () => {

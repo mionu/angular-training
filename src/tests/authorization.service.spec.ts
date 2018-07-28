@@ -2,10 +2,10 @@ import { TestBed, inject } from '@angular/core/testing';
 import { AuthorizationService } from '../app/core/authorization.service';
 
 const creds = {
-  email: 'janedoe@example.com', password: 'password'
+  email: 'janedoe', password: 'password'
 };
 
-describe('UserService', () => {
+describe('AuthorizationService', () => {
   let service: AuthorizationService;
 
   beforeEach(() => {
