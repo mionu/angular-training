@@ -48,4 +48,8 @@ export class CoursePageComponent implements OnInit {
     this.router.navigate([RouterPaths.COURSES]);
   }
 
+  cancel() {
+    this.router.navigate([RouterPaths.COURSES]);
+  }
+
 }
