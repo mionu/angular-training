@@ -1,4 +1,4 @@
-import { AppRoutingModule } from "src/app/app-routing/app-routing.module";
+import { AppRoutingModule } from "../app/app-routing/app-routing.module";
 
 describe('AppRoutingModule', () => {
   let appRoutingModule: AppRoutingModule;

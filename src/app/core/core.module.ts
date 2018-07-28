@@ -3,14 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
-import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule
   ],
-  declarations: [ HeaderComponent, FooterComponent, BreadcrumbsComponent ],
-  exports: [ HeaderComponent, FooterComponent, BreadcrumbsComponent ]
+  declarations: [ HeaderComponent, FooterComponent ],
+  exports: [ HeaderComponent, FooterComponent ]
 })
 export class CoreModule { }

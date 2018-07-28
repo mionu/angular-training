@@ -4,6 +4,7 @@ import { List } from 'immutable';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Course } from '../course.model';
 import { CoursesService } from '../courses.service';
+import { BreadcrumbService } from '../../shared/breadcrumb.service';
 import { SearchCoursePipe } from '../search-course.pipe';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { RouterPaths } from '../../app-routing/app-routing.constants';
@@ -21,12 +22,14 @@ export class CoursesListComponent implements OnInit {
     private coursesService: CoursesService,
     private router: Router,
     private searchPipe: SearchCoursePipe,
+    private breadcrumbService: BreadcrumbService,
     private modalService: NgbModal) {
     this.courses = null;;
   }
 
   ngOnInit() {
     this.courses = this.coursesService.getCoursesList();
+    this.breadcrumbService.breadcrumb = [ { label: 'Courses' } ];
   }
 
   get hasCourses() {
