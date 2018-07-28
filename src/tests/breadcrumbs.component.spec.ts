@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { BreadcrumbsComponent } from '../app/core/breadcrumbs/breadcrumbs.component';
 import { RouterTestingModule } from '@angular/router/testing';
+import { BreadcrumbsComponent } from 'src/app/shared/breadcrumbs/breadcrumbs.component';
 
 describe('BreadcrumbsComponent', () => {
   let component: BreadcrumbsComponent;
@@ -22,10 +22,5 @@ describe('BreadcrumbsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeDefined();
-  });
-
-  it('should have courses list as default active area', () => {
-    const activeItem = fixture.nativeElement.querySelector('li.active');
-    expect(activeItem.textContent).toEqual('Courses');
   });
 });
