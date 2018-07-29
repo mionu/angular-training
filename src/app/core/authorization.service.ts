@@ -1,25 +1,24 @@
 import { Injectable } from '@angular/core';
 import { User } from './user.model';
 
-const users: User[] = [{
-  id: 1,
-  email: 'janedoe',
-  password: 'password',
-  login: 'janedoe'
-}];
-
 @Injectable({
   providedIn: 'root'
 })
 export class AuthorizationService {
   currentUser: User = null;
+  users: User[] = [{
+    id: 1,
+    email: 'janedoe',
+    password: 'password',
+    login: 'janedoe'
+  }];
 
   constructor() { }
 
   login({ email, password }) {
-    const userIndex = users.findIndex(user => user.email === email && user.password === password);
+    const userIndex = this.users.findIndex(user => user.email === email && user.password === password);
     if(userIndex > -1) {
-      this.currentUser = users[userIndex];
+      this.currentUser = this.users[userIndex];
       localStorage.setItem('email', email);
       return true;
     }
