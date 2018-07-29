@@ -59,7 +59,8 @@ describe('CoursesListComponent', () => {
     component = fixture.componentInstance;
     coursesServiceStub = {
       getCoursesList: () => coursesList,
-      coursesList: coursesList
+      coursesList: coursesList,
+      getCourseById: jasmine.createSpy()
     };
   });
 
@@ -93,5 +94,13 @@ describe('CoursesListComponent', () => {
 
     expect(component.courses.size).toBe(2);
     expect(component.courses.get(0).title).toContain('asd');
+  });
+
+  it('should delete course', () => {
+    fixture.detectChanges();
+    component.deleteCourse = jasmine.createSpy();
+    const deleteEvent = { type: 'delete', courseId: 1 };
+    component.updateCourses(deleteEvent);
+    expect(component.deleteCourse).toHaveBeenCalled();
   });
 });

@@ -11,6 +11,7 @@ describe('CoursePageComponent', () => {
 
   const MockCourseService: Partial<CoursesService> = {
     createCourse: jasmine.createSpy(),
+    updateCourse: jasmine.createSpy(),
     getCourseById: jasmine.createSpy()
   }
 
@@ -28,8 +29,7 @@ describe('CoursePageComponent', () => {
     component = fixture.componentInstance;
     // @ts-ignore
     spyOn(component.router, 'navigate').and.returnValue(true);
-    // @ts-ignore
-    component.subscription = { unsubscribe: jasmine.createSpy() };
+    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -38,17 +38,30 @@ describe('CoursePageComponent', () => {
 
   it('should save new course', () => {
     component.course = {
-      id: 0,
+      id: null,
       title: 'title',
       description: 'desc',
       creationDate: new Date(),
       duration: 30
     };
-    fixture.detectChanges();
     const saveButton = fixture.nativeElement.querySelector('.save-btn');
     const service = TestBed.get(CoursesService);
 
     saveButton.click();
     expect(service.createCourse).toHaveBeenCalled();
+  });
+
+  it('should edit existing course', () => {
+    component.course = {
+      id: 1,
+      title: 'title',
+      description: 'desc',
+      creationDate: new Date(),
+      duration: 30
+    };
+    const saveButton = fixture.nativeElement.querySelector('.save-btn');
+    const service = TestBed.get(CoursesService);
+    saveButton.click();
+    expect(service.updateCourse).toHaveBeenCalled();
   });
 });
