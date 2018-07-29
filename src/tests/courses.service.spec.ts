@@ -1,4 +1,4 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { inject } from '@angular/core/testing';
 import { CoursesService } from '../app/courses-list/courses.service';
 import { Course } from '../app/courses-list/course.model';
 
