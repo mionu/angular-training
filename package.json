@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --aot",
     "build": "ng build",
     "test": "ng test --code-coverage",
     "lint": "ng lint",
@@ -23,6 +23,7 @@
     "@ng-bootstrap/ng-bootstrap": "^2.2.0",
     "bootstrap": "^4.1.1",
     "core-js": "^2.5.4",
+    "immutable": "^3.8.2",
     "moment": "^2.22.2",
     "open-iconic": "^1.1.1",
     "rxjs": "^6.0.0",

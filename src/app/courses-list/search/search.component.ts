@@ -12,7 +12,7 @@ export class SearchComponent implements OnInit {
   constructor() { }
 
   search() {
-    this.searchEvent.emit({ event: 'search', query: this.searchQuery });
+    this.searchEvent.emit({ type: 'search', query: this.searchQuery });
   }
 
   ngOnInit() {

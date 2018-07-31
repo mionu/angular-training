@@ -1,4 +1,4 @@
-import { LoginPageModule } from 'src/app/login-page/login-page.module';
+import { LoginPageModule } from '../app/login-page/login-page.module';
 
 describe('LoginPageModule', () => {
   let loginPageModule: LoginPageModule;

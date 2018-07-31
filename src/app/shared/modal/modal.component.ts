@@ -8,7 +8,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styles: [ './modal.component.css' ]
 })
 export class ModalComponent {
-
+  courseTitle: string;
   constructor(private activeModal: NgbActiveModal) {}
-
 }
