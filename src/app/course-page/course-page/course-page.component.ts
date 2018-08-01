@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { cloneDeep } from 'lodash';
 import { Course } from '../../courses-list/course.model';
 import { CoursesService } from '../../courses-list/courses.service';
 import { BreadcrumbService } from '../../shared/breadcrumb.service';
@@ -12,6 +13,7 @@ import { RouterPaths } from '../../app-routing/app-routing.constants';
 })
 export class CoursePageComponent implements OnInit {
   course: Course;
+  newCourse: Course;
 
   constructor(
     private coursesService: CoursesService,
@@ -24,7 +26,7 @@ export class CoursePageComponent implements OnInit {
     this.setCourseData();
     this.breadcrumbService.breadcrumb = [
       { label: 'Courses', url: RouterPaths.COURSES },
-      { label: this.course.title || 'New course'}
+      { label: this.newCourse.title || 'New course'}
     ];
   }
 
@@ -39,12 +41,13 @@ export class CoursePageComponent implements OnInit {
       duration: null,
       creationDate: null,
     };
+    this.newCourse = cloneDeep(this.course);
   }
 
   saveCourse() {
     this.course.id ?
-      this.coursesService.updateCourse(this.course) :
-      this.coursesService.createCourse(this.course);
+      this.coursesService.updateCourse(this.newCourse) :
+      this.coursesService.createCourse(this.newCourse);
     this.router.navigate([RouterPaths.COURSES]);
   }
 
