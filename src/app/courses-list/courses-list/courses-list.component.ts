@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { List } from 'immutable';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Course } from '../course.model';
 import { CoursesService } from '../courses.service';
+import { BreadcrumbService } from '../../shared/breadcrumb.service';
 import { SearchCoursePipe } from '../search-course.pipe';
 import { ModalComponent } from '../../shared/modal/modal.component';
+import { RouterPaths } from '../../app-routing/app-routing.constants';
 
 @Component({
   selector: 'app-courses-list',
@@ -19,14 +21,15 @@ export class CoursesListComponent implements OnInit {
   constructor(
     private coursesService: CoursesService,
     private router: Router,
-    private route: ActivatedRoute,
     private searchPipe: SearchCoursePipe,
+    private breadcrumbService: BreadcrumbService,
     private modalService: NgbModal) {
     this.courses = null;;
   }
 
   ngOnInit() {
     this.courses = this.coursesService.getCoursesList();
+    this.breadcrumbService.breadcrumb = [ { label: 'Courses' } ];
   }
 
   get hasCourses() {
@@ -34,7 +37,7 @@ export class CoursesListComponent implements OnInit {
   }
 
   newCourse() {
-    this.router.navigate(['./course/new'], { relativeTo: this.route });
+    this.router.navigate([RouterPaths.NEW_COURSE]);
   }
 
   filterCourses(event) {

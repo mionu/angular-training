@@ -11,7 +11,6 @@ class TestComponent {
 
 describe('CourseOutlineDirective', () => {
   let fixture;
-  let testComponent;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -25,7 +24,6 @@ describe('CourseOutlineDirective', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestComponent);
-    testComponent = fixture.componentInstance;
     fixture.detectChanges();
   });
 

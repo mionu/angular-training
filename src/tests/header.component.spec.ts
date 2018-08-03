@@ -21,9 +21,11 @@ describe('HeaderComponent', () => {
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
     // @ts-ignore
-    component.subscription = { unsubscribe: jasmine.createSpy() };
+    spyOn(component.router, 'navigate').and.returnValue(true);
     authServiceStub = {
-      getUserInfo: () => 'janedoe'
+      getUserInfo: () => 'janedoe',
+      isAuthenticated: () => true,
+      logout: jasmine.createSpy()
     }
   });
 
@@ -31,16 +33,16 @@ describe('HeaderComponent', () => {
     expect(component).toBeDefined();
   });
 
-  it('should load current user name on init', () => {
-    component.ngOnInit();
-    const currentUser = TestBed.get(AuthorizationService).getUserInfo();
-    expect(component.userLogin).toBeDefined();
-    expect(component.userLogin).toEqual(currentUser);
-  });
-
   it('should display current user login', () => {
     fixture.detectChanges();
     const userName = fixture.nativeElement.querySelector('.user-name');
     expect(userName.textContent).toEqual('janedoe');
+  });
+
+  it('should log out on button click', () => {
+    fixture.detectChanges();
+    const button = fixture.nativeElement.querySelector('button');
+    button.click();
+    expect(TestBed.get(AuthorizationService).logout).toHaveBeenCalled();
   });
 });

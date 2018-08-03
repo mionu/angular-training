@@ -1,11 +1,14 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { AuthorizationService } from '../app/core/authorization.service';
 
-const creds = {
-  email: 'janedoe@example.com', password: 'password'
+const creds ={
+  id: 1,
+  email: 'janedoe',
+  password: 'password',
+  login: 'janedoe'
 };
 
-describe('UserService', () => {
+describe('AuthorizationService', () => {
   let service: AuthorizationService;
 
   beforeEach(() => {
@@ -13,6 +16,7 @@ describe('UserService', () => {
       providers: [ AuthorizationService ]
     });
     service = new AuthorizationService();
+    service.users = [ creds ];
   });
 
   it('should be created', inject([AuthorizationService], (service: AuthorizationService) => {

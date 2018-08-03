@@ -1,12 +1,34 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { inject } from '@angular/core/testing';
+import { List } from 'immutable';
 import { CoursesService } from '../app/courses-list/courses.service';
 import { Course } from '../app/courses-list/course.model';
+
+const courses = List([{
+  id: 1,
+  title: 'qwe',
+  creationDate: new Date(),
+  duration: 60,
+  description: 'desc 1'
+}, {
+  id: 2,
+  title: 'asd',
+  creationDate: new Date(),
+  duration: 80,
+  description: 'desc 2'
+}, {
+  id: 3,
+  title: 'qweasd',
+  creationDate: new Date(),
+  duration: 95,
+  description: 'desc 3'
+}]);
 
 describe('CoursesService', () => {
   let service: CoursesService;
 
   beforeEach(() => {
     service = new CoursesService();
+    service.coursesList = courses;
   });
 
   it('should be created', inject([CoursesService], (service: CoursesService) => {
@@ -27,7 +49,7 @@ describe('CoursesService', () => {
 
   it('should get course by id', () => {
     const course = service.getCourseById({ id: 2 });
-    expect(course.title).toBe('course 2');
+    expect(course.title).toBe('asd');
   });
 
   it('shoud update course', () => {

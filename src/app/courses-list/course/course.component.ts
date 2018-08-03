@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { Course } from '../course.model';
 import { Outline, freshCourseDaysLimit } from '../course.constants';
+import { RouterPaths } from '../../app-routing/app-routing.constants';
 
 @Component({
   selector: 'app-course',
@@ -24,7 +25,7 @@ export class CourseComponent implements OnInit {
   }
 
   editCourse() {
-    this.router.navigate(['./course', this.course.id], { relativeTo: this.route });
+    this.router.navigate([RouterPaths.COURSES, this.course.id], { relativeTo: this.route });
   }
 
   getCourseOutlineColor() {

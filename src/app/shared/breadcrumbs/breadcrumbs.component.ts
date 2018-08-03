@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { BreadcrumbService } from '../breadcrumb.service';
 
 @Component({
   selector: 'app-breadcrumbs',
@@ -7,12 +8,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./breadcrumbs.component.css']
 })
 export class BreadcrumbsComponent implements OnInit {
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    public breadcrumbsService: BreadcrumbService
+  ) { }
 
   ngOnInit() { }
 
   get isVisible() {
-    return !this.router.url.match(/login/gi);
+    return this.router.url.match(/courses/gi);
   }
 
 }
