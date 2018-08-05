@@ -1,6 +1,10 @@
 export interface User {
   id: number;
-  email: string;
+  fakeToken: string;
+  name: {
+    first: string;
+    last: string;
+  }
   password: string;
   login: string;
 }

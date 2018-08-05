@@ -1,9 +1,9 @@
 <div class="card">
   <div class="card-body">
-    <form (ngSubmit)="this.login()">
+    <form (ngSubmit)="doLogin()">
         <div class="form-group">
-          <label>Email address</label>
-          <input name="userEmail" [(ngModel)]="email" type="email" class="form-control" placeholder="Enter email">
+          <label>Login</label>
+          <input name="userLogin" [(ngModel)]="login" type="text" class="form-control" placeholder="Enter login">
         </div>
         <div class="form-group">
           <label>Password</label>
