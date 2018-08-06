@@ -5,7 +5,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Course } from '../course.model';
 import { CoursesService } from '../courses.service';
 import { BreadcrumbService } from '../../shared/breadcrumb.service';
-import { SearchCoursePipe } from '../search-course.pipe';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { RouterPaths } from '../../app-routing/app-routing.constants';
 import { DEFAULT_COURSES_PER_PAGE } from 'src/app/courses-list/course.constants';
@@ -20,19 +19,18 @@ export class CoursesListComponent implements OnInit {
   courses: List<Course> = List([]);
   coursesCount: number = DEFAULT_COURSES_PER_PAGE;
   pageIndex: number = 0;
+  query: string;
 
   constructor(
     public coursesService: CoursesService,
     private route: ActivatedRoute,
     private router: Router,
-    private searchPipe: SearchCoursePipe,
     private breadcrumbService: BreadcrumbService,
     private modalService: NgbModal) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
-      const { start, count } = params;
-      this.coursesService.getCoursesList({ start, count }).subscribe(courses => {
+      this.coursesService.getCoursesList(params).subscribe(courses => {
         this.courses = List(courses);
       });
     });
@@ -49,7 +47,9 @@ export class CoursesListComponent implements OnInit {
 
   filterCourses(event) {
     const { query } = event;
-    this.courses = this.searchPipe.transform(this.courses, query);
+    this.pageIndex = 0;
+    this.query = query;
+    this.router.navigate([], { queryParams: { query, start: 0, count: DEFAULT_COURSES_PER_PAGE } });
   }
 
   updateCourses(event) {
@@ -73,8 +73,14 @@ export class CoursesListComponent implements OnInit {
   }
 
   loadMore() {
-    const startPosition = ++this.pageIndex * this.coursesCount;
-    this.router.navigate([], { queryParams: { start: startPosition, count: DEFAULT_COURSES_PER_PAGE } });
+    const queryParams: any = {
+      start: ++this.pageIndex * this.coursesCount,
+      count: DEFAULT_COURSES_PER_PAGE
+    };
+    if(this.query && this.query.length > 0) {
+      queryParams.query = this.query;
+    }
+    this.router.navigate([], { queryParams });
   }
 
 }

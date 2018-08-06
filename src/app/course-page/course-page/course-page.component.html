@@ -16,7 +16,7 @@
     <div class="input-group">
       <input [(ngModel)]="newCourse.length" type="text" required name="courseDuration" class="form-control">
       <div *ngIf="newCourse.length" class="input-group-append">
-        <span class="input-group-text">{{newCourse && newCourse.duration | courseDuration}}</span>
+        <span class="input-group-text">{{newCourse && newCourse.length | courseDuration}}</span>
       </div>
     </div>
   </div>

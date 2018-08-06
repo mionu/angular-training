@@ -7,7 +7,6 @@ import { NgbModalStack } from '@ng-bootstrap/ng-bootstrap/modal/modal-stack';
 import { CoursesListComponent } from '../app/courses-list/courses-list/courses-list.component';
 import { CoursesService } from '../app/courses-list/courses.service';
 import { OrderByPipe } from '../app/courses-list/order-by.pipe';
-import { SearchCoursePipe } from '../app/courses-list/search-course.pipe';
 import { SearchComponent } from '../app/courses-list/search/search.component';
 
 const coursesList = List([{
@@ -40,13 +39,11 @@ describe('CoursesListComponent', () => {
       declarations: [
         CoursesListComponent,
         SearchComponent,
-        OrderByPipe,
-        SearchCoursePipe
+        OrderByPipe
       ],
       imports: [ FormsModule, RouterTestingModule ],
       providers:[
         { provide: CoursesService, useValue: coursesServiceStub },
-        SearchCoursePipe,
         NgbModalStack
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]

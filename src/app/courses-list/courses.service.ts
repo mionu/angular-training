@@ -12,10 +12,15 @@ export class CoursesService {
 
   constructor(private http: HttpClient) { }
 
-  getCoursesList({ start, count }): Observable<Course[]> {
-    const startParam = start + '';
-    const countParam = count + '';
-    return this.http.get<Course[]>(`${BASE_URL}${COURSES_PATH}`, { params: { start: startParam, count: countParam } });
+  getCoursesList(options: any): Observable<Course[]> {
+    const params: any = {
+      start: options.start + '',
+      count: options.count + ''
+    };
+    if(options.query) {
+      params.textFragment = options.query;
+    }
+    return this.http.get<Course[]>(`${BASE_URL}${COURSES_PATH}`, { params });
   }
 
   createCourse(newCourse: Course): List<Course> {
@@ -26,8 +31,8 @@ export class CoursesService {
     // return this.coursesList;
   }
 
-  getCourseById({ id }): Course {
-    return this.coursesList.find(course => course.id === id);
+  getCourseById({ id }): Observable<Course> {
+    return this.http.get<Course>(`${BASE_URL}${COURSES_PATH}/${id}`);
   }
 
   updateCourse(updatedCourse: Course): List<Course> {

@@ -13,7 +13,14 @@ import { RouterPaths } from '../../app-routing/app-routing.constants';
 })
 export class CoursePageComponent implements OnInit {
   course: Course;
-  newCourse: Course;
+  newCourse: Course = {
+    id: null,
+    name: '',
+    description: '',
+    length: null,
+    date: null,
+    isTopRated: false
+  };
 
   constructor(
     private coursesService: CoursesService,
@@ -23,26 +30,31 @@ export class CoursePageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.setCourseData();
-    this.breadcrumbService.breadcrumb = [
-      { label: 'Courses', url: RouterPaths.COURSES },
-      { label: this.newCourse.name || 'New course'}
-    ];
-  }
-
-  ngOnDestroy() { }
-
-  setCourseData() {
-    const id = +this.route.snapshot.paramMap.get('id');
-    this.course = this.coursesService.getCourseById({ id }) || {
-      id: null,
-      name: '',
-      description: '',
-      length: null,
-      date: null,
-      isTopRated: false
-    };
-    this.newCourse = cloneDeep(this.course);
+    this.breadcrumbService.breadcrumb = [{
+      label: 'Courses', url: RouterPaths.COURSES
+    }];
+    this.route.params.subscribe(params => {
+      const courseId = params.id;
+      if(courseId === 'new') {
+        this.breadcrumbService.breadcrumb.push({
+          label: 'New course'
+        });
+      }
+      else {
+        this.coursesService.getCourseById({ id: courseId }).subscribe(course => {
+          if(course) {
+            this.course = course;
+            this.newCourse = cloneDeep(course);
+            this.breadcrumbService.breadcrumb.push({
+              label: this.newCourse.name
+            });
+          }
+          else {
+            this.router.navigate([RouterPaths.COURSES]);
+          }
+        });
+      }
+    });
   }
 
   saveCourse() {
