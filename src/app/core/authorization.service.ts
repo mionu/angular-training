@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
-import { User } from './user.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-const BASE_URL = 'http://localhost:3004';
-const AUTH_PATH ='/auth/login';
-const GET_USER_INFO_PATH = '/auth/userinfo';
+import { User } from './user.model';
+import { BASE_URL, AUTH_PATH, GET_USER_INFO_PATH } from 'src/app/core/constants';
 
 @Injectable({
   providedIn: 'root'

@@ -29,7 +29,7 @@ export class CourseComponent implements OnInit {
   }
 
   getCourseOutlineColor() {
-    const dateDiff = moment().diff(this.course.creationDate, 'days');
+    const dateDiff = moment().diff(this.course.date, 'days');
     switch(true) {
       case dateDiff < 0:
         return Outline.upcoming;

@@ -26,7 +26,7 @@ export class CoursePageComponent implements OnInit {
     this.setCourseData();
     this.breadcrumbService.breadcrumb = [
       { label: 'Courses', url: RouterPaths.COURSES },
-      { label: this.newCourse.title || 'New course'}
+      { label: this.newCourse.name || 'New course'}
     ];
   }
 
@@ -36,10 +36,11 @@ export class CoursePageComponent implements OnInit {
     const id = +this.route.snapshot.paramMap.get('id');
     this.course = this.coursesService.getCourseById({ id }) || {
       id: null,
-      title: '',
+      name: '',
       description: '',
-      duration: null,
-      creationDate: null,
+      length: null,
+      date: null,
+      isTopRated: false
     };
     this.newCourse = cloneDeep(this.course);
   }
