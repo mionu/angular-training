@@ -41,9 +41,7 @@ export class CoursesService {
     // return this.coursesList;
   }
 
-  removeCourse({ id }): List<Course> {
-    // const courseIndex = this.getCoursePosition({ id });
-    // this.coursesList = this.coursesList.delete(courseIndex);
-    // return this.coursesList;
+  removeCourse({ id }): Observable<Course> {
+    return this.http.delete<Course>(`${BASE_URL}${COURSES_PATH}/${id}`);
   }
 }

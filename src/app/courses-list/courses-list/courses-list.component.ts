@@ -17,9 +17,11 @@ import { DEFAULT_COURSES_PER_PAGE } from 'src/app/courses-list/course.constants'
 })
 export class CoursesListComponent implements OnInit {
   courses: List<Course> = List([]);
-  coursesCount: number = DEFAULT_COURSES_PER_PAGE;
-  pageIndex: number = 0;
-  query: string;
+  params: {
+    start: number,
+    count: number,
+    query?: string
+  } = { start: 0, count: DEFAULT_COURSES_PER_PAGE };
 
   constructor(
     public coursesService: CoursesService,
@@ -41,21 +43,23 @@ export class CoursesListComponent implements OnInit {
     return this.courses && this.courses.size > 0;
   }
 
+  requestCourses() {}
+
   newCourse() {
     this.router.navigate([RouterPaths.NEW_COURSE]);
   }
 
   filterCourses(event) {
     const { query } = event;
-    this.pageIndex = 0;
-    this.query = query;
-    this.router.navigate([], { queryParams: { query, start: 0, count: DEFAULT_COURSES_PER_PAGE } });
+    this.params.start = 0;
+    this.params.query = query;
+    this.router.navigate([], { queryParams: this.params });
   }
 
   updateCourses(event) {
     switch(event.type) {
       case 'delete': {
-        const courseToDelete = this.coursesService.getCourseById({ id: event.courseId });
+        const courseToDelete = this.courses.find(course => course.id === event.courseId);
         this.deleteCourse(courseToDelete);
         break;
       }
@@ -64,23 +68,19 @@ export class CoursesListComponent implements OnInit {
 
   deleteCourse(course) {
     const modalRef = this.modalService.open(ModalComponent);
-    modalRef.componentInstance.courseTitle = course.title;
+    modalRef.componentInstance.courseTitle = course.name;
     modalRef.result.then(res => {
       if(res === 'yes') {
-        this.coursesService.removeCourse({ id: course.id });
+        this.coursesService.removeCourse({ id: course.id }).toPromise()
+          .then(res => this.coursesService.getCoursesList(this.params))
+          .then(courses => this.courses = List(courses))
       }
     });
   }
 
   loadMore() {
-    const queryParams: any = {
-      start: ++this.pageIndex * this.coursesCount,
-      count: DEFAULT_COURSES_PER_PAGE
-    };
-    if(this.query && this.query.length > 0) {
-      queryParams.query = this.query;
-    }
-    this.router.navigate([], { queryParams });
+    this.params.start += this.params.count;
+    this.router.navigate([], { queryParams: this.params });
   }
 
 }
