@@ -71,9 +71,9 @@ export class CoursesListComponent implements OnInit {
     modalRef.componentInstance.courseTitle = course.name;
     modalRef.result.then(res => {
       if(res === 'yes') {
-        this.coursesService.removeCourse({ id: course.id }).toPromise()
-          .then(res => this.coursesService.getCoursesList(this.params))
-          .then(courses => this.courses = List(courses))
+        this.coursesService.removeCourse({ id: course.id })
+          .subscribe(() => this.coursesService.getCoursesList(this.params)
+          .subscribe(courses => this.courses = List(courses)));
       }
     });
   }

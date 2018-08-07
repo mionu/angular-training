@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { cloneDeep } from 'lodash';
 import { Course } from '../../courses-list/course.model';
 import { CoursesService } from '../../courses-list/courses.service';
 import { BreadcrumbService } from '../../shared/breadcrumb.service';
 import { RouterPaths } from '../../app-routing/app-routing.constants';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-course-page',
@@ -26,7 +27,7 @@ export class CoursePageComponent implements OnInit {
     private coursesService: CoursesService,
     private breadcrumbService: BreadcrumbService,
     private route: ActivatedRoute,
-    private router: Router
+    private location: Location
   ) { }
 
   ngOnInit() {
@@ -50,7 +51,7 @@ export class CoursePageComponent implements OnInit {
             });
           }
           else {
-            this.router.navigate([RouterPaths.COURSES]);
+            this.location.back();
           }
         });
       }
@@ -58,14 +59,14 @@ export class CoursePageComponent implements OnInit {
   }
 
   saveCourse() {
-    this.course.id ?
+    const handler =  this.course.id ?
       this.coursesService.updateCourse(this.newCourse) :
       this.coursesService.createCourse(this.newCourse);
-    this.router.navigate([RouterPaths.COURSES]);
+    handler.subscribe(() => this.location.back());
   }
 
   cancel() {
-    this.router.navigate([RouterPaths.COURSES]);
+    this.location.back();
   }
 
 }

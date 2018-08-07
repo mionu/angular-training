@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { List } from 'immutable';
 import { Course } from './course.model';
 import { BASE_URL, COURSES_PATH } from 'src/app/core/constants';
 
@@ -23,22 +22,22 @@ export class CoursesService {
     return this.http.get<Course[]>(`${BASE_URL}${COURSES_PATH}`, { params });
   }
 
-  createCourse(newCourse: Course): List<Course> {
-    // if (!newCourse.id) {
-    //   newCourse.id = this.nextCourseId++;
-    // }
-    // this.coursesList = this.coursesList.push(newCourse);
-    // return this.coursesList;
+  createCourse(newCourse: Course): Observable<Course> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post<Course>(`${BASE_URL}${COURSES_PATH}`, newCourse, { headers });
   }
 
   getCourseById({ id }): Observable<Course> {
     return this.http.get<Course>(`${BASE_URL}${COURSES_PATH}/${id}`);
   }
 
-  updateCourse(updatedCourse: Course): List<Course> {
-    // const courseIndex = this.getCoursePosition({ id: updatedCourse.id });
-    // this.coursesList = this.coursesList.splice(courseIndex, 1, updatedCourse).toList();
-    // return this.coursesList;
+  updateCourse(updatedCourse: Course): Observable<Course> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    return this.http.patch<Course>(`${BASE_URL}${COURSES_PATH}/${updatedCourse.id}`, updatedCourse, { headers });
   }
 
   removeCourse({ id }): Observable<Course> {
