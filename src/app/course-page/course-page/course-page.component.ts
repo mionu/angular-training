@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { cloneDeep } from 'lodash';
 import { Course } from '../../courses-list/course.model';
 import { CoursesService } from '../../courses-list/courses.service';
 import { BreadcrumbService } from '../../shared/breadcrumb.service';
@@ -13,8 +12,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./course-page.component.css']
 })
 export class CoursePageComponent implements OnInit {
-  course: Course;
-  newCourse: Course = {
+  course: Course = {
     id: null,
     name: '',
     description: '',
@@ -36,7 +34,7 @@ export class CoursePageComponent implements OnInit {
     }];
     this.route.params.subscribe(params => {
       const courseId = params.id;
-      if(courseId === 'new') {
+      if(!courseId) {
         this.breadcrumbService.breadcrumb.push({
           label: 'New course'
         });
@@ -45,9 +43,8 @@ export class CoursePageComponent implements OnInit {
         this.coursesService.getCourseById({ id: courseId }).subscribe(course => {
           if(course) {
             this.course = course;
-            this.newCourse = cloneDeep(course);
             this.breadcrumbService.breadcrumb.push({
-              label: this.newCourse.name
+              label: this.course.name
             });
           }
           else {
@@ -60,8 +57,8 @@ export class CoursePageComponent implements OnInit {
 
   saveCourse() {
     const handler =  this.course.id ?
-      this.coursesService.updateCourse(this.newCourse) :
-      this.coursesService.createCourse(this.newCourse);
+      this.coursesService.updateCourse(this.course) :
+      this.coursesService.createCourse(this.course);
     handler.subscribe(() => this.location.back());
   }
 

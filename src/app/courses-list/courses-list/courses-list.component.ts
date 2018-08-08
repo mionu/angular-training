@@ -2,12 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { List } from 'immutable';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { concat } from 'rxjs';
+import { last } from 'rxjs/operators';
 import { Course } from '../course.model';
 import { CoursesService } from '../courses.service';
 import { BreadcrumbService } from '../../shared/breadcrumb.service';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { RouterPaths } from '../../app-routing/app-routing.constants';
 import { DEFAULT_COURSES_PER_PAGE } from 'src/app/courses-list/course.constants';
+
 
 @Component({
   selector: 'app-courses-list',
@@ -32,6 +35,8 @@ export class CoursesListComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
+      const { start, count, query } = params;
+      this.params = { start: +start, count: +count, query };
       this.coursesService.getCoursesList(params).subscribe(courses => {
         this.courses = List(courses);
       });
@@ -42,8 +47,6 @@ export class CoursesListComponent implements OnInit {
   get hasCourses() {
     return this.courses && this.courses.size > 0;
   }
-
-  requestCourses() {}
 
   newCourse() {
     this.router.navigate([RouterPaths.NEW_COURSE]);
@@ -71,9 +74,12 @@ export class CoursesListComponent implements OnInit {
     modalRef.componentInstance.courseTitle = course.name;
     modalRef.result.then(res => {
       if(res === 'yes') {
-        this.coursesService.removeCourse({ id: course.id })
-          .subscribe(() => this.coursesService.getCoursesList(this.params)
-          .subscribe(courses => this.courses = List(courses)));
+        concat(
+          this.coursesService.removeCourse({ id: course.id }),
+          this.coursesService.getCoursesList(this.params)
+        )
+        .pipe(last())
+        .subscribe(courses => this.courses = List(courses));
       }
     });
   }
