@@ -1,4 +1,5 @@
 <div class="form-inline">
-  <input class="search-input form-control mr-sm-2" [(ngModel)]="searchQuery" placeholder="Search" aria-label="Search">
-  <button class="search-button btn btn-outline-primary my-2 my-sm-0" (click)="search()">Search</button>
+  <input class="search-input form-control mr-sm-2"
+  [(ngModel)]="searchQuery" (ngModelChange)="onInput()"
+  placeholder="Search" aria-label="Search">
 </div>

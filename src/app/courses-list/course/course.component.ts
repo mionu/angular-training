@@ -21,7 +21,7 @@ export class CourseComponent implements OnInit {
   }
 
   deleteCourse() {
-    this.courseChangeEvent.emit({ type: 'delete', courseId: this.course.id });
+    this.courseChangeEvent.emit({ type: 'delete', course: this.course });
   }
 
   editCourse() {
