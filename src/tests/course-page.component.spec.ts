@@ -39,10 +39,10 @@ describe('CoursePageComponent', () => {
   it('should save new course', () => {
     component.course = {
       id: null,
-      title: 'title',
+      name: 'title',
       description: 'desc',
-      creationDate: new Date(),
-      duration: 30
+      date: new Date(),
+      length: 30
     };
     const saveButton = fixture.nativeElement.querySelector('.save-btn');
     const service = TestBed.get(CoursesService);
@@ -54,10 +54,10 @@ describe('CoursePageComponent', () => {
   it('should edit existing course', () => {
     component.course = {
       id: 1,
-      title: 'title',
+      name: 'title',
       description: 'desc',
-      creationDate: new Date(),
-      duration: 30
+      date: new Date(),
+      length: 30
     };
     const saveButton = fixture.nativeElement.querySelector('.save-btn');
     const service = TestBed.get(CoursesService);

@@ -28,24 +28,17 @@ describe('AuthorizationService', () => {
     });
   })));
 
-  it('shoudl not log in with wrong email/password combination', inject([AuthorizationService], (service: AuthorizationService) => {
-    expect(service.login({ login: 'qwe', password: 'asd' })).toBeFalsy();
-  }));
+  it('shoudl not log in with wrong email/password combination', inject([AuthorizationService], fakeAsync((service: AuthorizationService) => {
+    service.login({ login: 'qwe', password: 'asd' }).subscribe(token => {
+      expect(token).toBeTruthy();
+    });
+  })));
 
   it('should log out', inject([AuthorizationService], (service: AuthorizationService) => {
-    service.login(creds);
-    service.logout();
-  }));
-
-  it('should return correct isAuthenticated status', inject([AuthorizationService], (service: AuthorizationService) => {
-    expect(service.isAuthenticated()).toBeFalsy();
-    service.login(creds);
-    expect(service.isAuthenticated()).toBeTruthy();
-  }));
-
-  it('getUserInfo() should return user login when authenticated', inject([AuthorizationService], (service: AuthorizationService) => {
-    expect(service.getUserInfo()).toBeNull();
-    service.login(creds);
-    expect(service.getUserInfo()).toBe('janedoe');
+    service.login(creds).subscribe(() => {
+      expect(localStorage.getItem('fakeToken')).toBeTruthy();
+      service.logout();
+      expect(localStorage.getItem('fakeToken')).toBeFalsy();
+    });
   }));
 });

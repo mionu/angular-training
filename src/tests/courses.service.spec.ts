@@ -1,10 +1,11 @@
-import { inject, TestBed } from '@angular/core/testing';
-import { List } from 'immutable';
+import { inject, TestBed, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { concat } from 'rxjs';
+import { last } from 'rxjs/operators';
 import { CoursesService } from '../app/courses-list/courses.service';
 import { Course } from '../app/courses-list/course.model';
 
-const courses = List([{
+const courses = [{
   id: 1,
   title: 'qwe',
   creationDate: new Date(),
@@ -22,10 +23,9 @@ const courses = List([{
   creationDate: new Date(),
   duration: 95,
   description: 'desc 3'
-}]);
+}];
 
 describe('CoursesService', () => {
-  let service: CoursesService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -38,7 +38,7 @@ describe('CoursesService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should add new course', inject([CoursesService], (service: CoursesService) => {
+  it('should add new course', inject([CoursesService], fakeAsync((service: CoursesService) => {
     const newCourse: Course = {
       id: 4,
       name: 'course',
@@ -46,29 +46,45 @@ describe('CoursesService', () => {
       date: new Date(),
       description: ''
     };
-    service.createCourse(newCourse);
-    expect(service.coursesList.size).toBe(4);
-  }));
+    concat(
+      service.createCourse(newCourse),
+      service.getCoursesList({ start: 0, count: 10 })
+    ).pipe(last())
+    .subscribe(courses => {
+      expect(courses.length).toBe(4);
+    });
+  })));
 
-  it('should get course by id', inject([CoursesService], (service: CoursesService) => {
-    const course = service.getCourseById({ id: 2 });
-    expect(course.name).toBe('asd');
-  }));
+  it('should get course by id', inject([CoursesService], fakeAsync((service: CoursesService) => {
+    service.getCourseById({ id: 2 }).subscribe(course => {
+      expect(course.name).toBe('asd');
+    });
+  })));
 
-  it('shoud update course', inject([CoursesService], (service: CoursesService) => {
+  it('shoud update course', inject([CoursesService], fakeAsync((service: CoursesService) => {
     const newCourse = {
       id: 3,
-      title: 'new course title',
-      duration: 40,
-      creationDate: new Date(),
+      name: 'new course title',
+      length: 40,
+      date: new Date(),
       description: ''
     };
-    service.updateCourse(newCourse);
-    expect(service.getCourseById({ id: 3 }).name).toBe(newCourse.title);
-  }));
+    concat(
+      service.updateCourse(newCourse),
+      service.getCourseById({ id: 3 })
+    ).pipe(last())
+    .subscribe(course => {
+      expect(course.name).toBe(newCourse.name);
+    });
+  })));
 
-  it('shoud remove course', inject([CoursesService], (service: CoursesService) => {
-    service.removeCourse({ id: 2 });
-    expect(service.coursesList.size).toBe(2);
-  }));
+  it('shoud remove course', inject([CoursesService], fakeAsync((service: CoursesService) => {
+    concat(
+      service.removeCourse({ id: 2 }),
+      service.getCoursesList({ start: 0, count: 10 })
+    ).pipe(last())
+    .subscribe(courses => {
+      expect(courses.length).toBe(2);
+    });
+  })));
 });
