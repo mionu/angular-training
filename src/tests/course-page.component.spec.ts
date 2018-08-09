@@ -28,7 +28,7 @@ describe('CoursePageComponent', () => {
     fixture = TestBed.createComponent(CoursePageComponent);
     component = fixture.componentInstance;
     // @ts-ignore
-    spyOn(component.router, 'navigate').and.returnValue(true);
+    spyOn(component.location, 'back').and.returnValue(true);
     fixture.detectChanges();
   });
 

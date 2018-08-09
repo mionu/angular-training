@@ -8,6 +8,7 @@ import { CoursesListComponent } from '../app/courses-list/courses-list/courses-l
 import { CoursesService } from '../app/courses-list/courses.service';
 import { OrderByPipe } from '../app/courses-list/order-by.pipe';
 import { SearchComponent } from '../app/courses-list/search/search.component';
+import { ScrollBar } from '@ng-bootstrap/ng-bootstrap/util/scrollbar';
 
 const coursesList = List([{
   id: 1,
@@ -44,7 +45,8 @@ describe('CoursesListComponent', () => {
       imports: [ FormsModule, RouterTestingModule ],
       providers:[
         { provide: CoursesService, useValue: coursesServiceStub },
-        NgbModalStack
+        NgbModalStack,
+        ScrollBar
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })

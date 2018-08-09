@@ -1,5 +1,6 @@
-import { inject } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { List } from 'immutable';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoursesService } from '../app/courses-list/courses.service';
 import { Course } from '../app/courses-list/course.model';
 
@@ -27,32 +28,34 @@ describe('CoursesService', () => {
   let service: CoursesService;
 
   beforeEach(() => {
-    service = new CoursesService();
-    service.coursesList = courses;
+    TestBed.configureTestingModule({
+      providers: [ CoursesService ],
+      imports: [ HttpClientTestingModule ]
+    });
   });
 
   it('should be created', inject([CoursesService], (service: CoursesService) => {
     expect(service).toBeTruthy();
   }));
 
-  it('should add new course', () => {
+  it('should add new course', inject([CoursesService], (service: CoursesService) => {
     const newCourse: Course = {
       id: 4,
-      title: 'course',
-      duration: 40,
-      creationDate: new Date(),
+      name: 'course',
+      length: 40,
+      date: new Date(),
       description: ''
     };
     service.createCourse(newCourse);
     expect(service.coursesList.size).toBe(4);
-  });
+  }));
 
-  it('should get course by id', () => {
+  it('should get course by id', inject([CoursesService], (service: CoursesService) => {
     const course = service.getCourseById({ id: 2 });
-    expect(course.title).toBe('asd');
-  });
+    expect(course.name).toBe('asd');
+  }));
 
-  it('shoud update course', () => {
+  it('shoud update course', inject([CoursesService], (service: CoursesService) => {
     const newCourse = {
       id: 3,
       title: 'new course title',
@@ -61,11 +64,11 @@ describe('CoursesService', () => {
       description: ''
     };
     service.updateCourse(newCourse);
-    expect(service.getCourseById({ id: 3 }).title).toBe(newCourse.title);
-  });
+    expect(service.getCourseById({ id: 3 }).name).toBe(newCourse.title);
+  }));
 
-  it('shoud remove course', () => {
+  it('shoud remove course', inject([CoursesService], (service: CoursesService) => {
     service.removeCourse({ id: 2 });
     expect(service.coursesList.size).toBe(2);
-  });
+  }));
 });
