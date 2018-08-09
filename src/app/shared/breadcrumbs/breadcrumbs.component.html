@@ -1,7 +1,7 @@
 <nav *ngIf="this.isVisible" aria-label="breadcrumb" class="border-top border-bottom">
   <ol class="breadcrumb bg-light m-0">
     <li *ngFor="let item of breadcrumbsService.breadcrumb; let last = last" class="breadcrumb-item" [ngClass]="{active: last}" >
-      <a *ngIf="!last" [routerLink]="[item.url || '']">{{item.label}}</a>
+      <a *ngIf="!last" routerLink="" (click)="item.action()">{{item.label}}</a>
       <span *ngIf="last">{{item.label}}</span>
     </li>
   </ol>

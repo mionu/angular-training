@@ -25,11 +25,8 @@ export class AuthorizationService {
     return !!this.currentUser;
   }
 
-  getUserInfo({ token }) {
-    const headers: HttpHeaders = new HttpHeaders({
-      Authorization: token
-    });
-    return this.http.post<User>(`${BASE_URL}${GET_USER_INFO_PATH}`, {}, { headers });
+  getUserInfo() {
+    return this.http.post<User>(`${BASE_URL}${GET_USER_INFO_PATH}`, {});
   }
 
 }

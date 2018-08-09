@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 import { Course } from '../../courses-list/course.model';
 import { CoursesService } from '../../courses-list/courses.service';
 import { BreadcrumbService } from '../../shared/breadcrumb.service';
-import { RouterPaths } from '../../app-routing/app-routing.constants';
-import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-course-page',
@@ -30,7 +29,7 @@ export class CoursePageComponent implements OnInit {
 
   ngOnInit() {
     this.breadcrumbService.breadcrumb = [{
-      label: 'Courses', url: RouterPaths.COURSES
+      label: 'Courses', action: () => this.location.back()
     }];
     this.route.params.subscribe(params => {
       const courseId = params.id;

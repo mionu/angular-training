@@ -23,7 +23,7 @@ export class LoginPageComponent implements OnInit {
     subscribe(res => {
       if(res.token) {
         localStorage.setItem('fakeToken', res.token);
-        this.authService.getUserInfo({ token: res.token }).subscribe((user) => {
+        this.authService.getUserInfo().subscribe((user) => {
           this.authService.currentUser = user;
           this.router.navigate([RouterPaths.COURSES], { queryParams: { start: 0, count: DEFAULT_COURSES_PER_PAGE } });
       });

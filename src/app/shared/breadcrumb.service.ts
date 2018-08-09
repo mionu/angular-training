@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 interface Breadcrumb {
   label: string,
-  url?: string
+  action?: Function
 }
 
 @Injectable({
