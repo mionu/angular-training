@@ -1,5 +1,8 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { CoursesService } from '../courses.service';
+import { Timeouts } from 'src/app/courses-list/course.constants';
 
 @Component({
   selector: 'app-search',
@@ -8,7 +11,6 @@ import { CoursesService } from '../courses.service';
 })
 export class SearchComponent implements OnInit {
   public searchQuery: string = '';
-  @Output() public searchEvent: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private coursesService: CoursesService) { }
 
@@ -16,13 +18,10 @@ export class SearchComponent implements OnInit {
 
   onInput() {
     if(this.searchQuery.length === 0 || this.searchQuery.length > 2) {
-      const { querySubject } = this.coursesService;
-      querySubject.next(this.searchQuery);
+      of(this.searchQuery)
+      .pipe(delay(Timeouts.SEARCH_QUERY_DELAY))
+      .subscribe(q => this.coursesService.query.next({ query: q }));
     }
-  }
-
-  search() {
-    this.searchEvent.emit({ type: 'search', query: this.searchQuery });
   }
 
 }

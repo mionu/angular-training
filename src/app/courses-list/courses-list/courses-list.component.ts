@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { List } from 'immutable';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { concat, Observable } from 'rxjs';
-import { last, tap } from 'rxjs/operators';
+import { concat, merge } from 'rxjs';
+import { last, map, switchMap, debounceTime } from 'rxjs/operators';
 import { Course } from '../course.model';
 import { CoursesService } from '../courses.service';
 import { BreadcrumbService } from '../../shared/breadcrumb.service';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { RouterPaths } from '../../app-routing/app-routing.constants';
-import { DEFAULT_COURSES_PER_PAGE } from 'src/app/courses-list/course.constants';
-import { pipe } from '@angular/core/src/render3/pipe';
+import { DEFAULT_COURSES_PER_PAGE, Timeouts } from 'src/app/courses-list/course.constants';
 
 
 @Component({
@@ -20,12 +18,12 @@ import { pipe } from '@angular/core/src/render3/pipe';
   providers: [ NgbModal ]
 })
 export class CoursesListComponent implements OnInit {
-  courses: Observable<Course[]>;
+  courses: Course[];
   params: {
     start: number,
-    count: number
+    count: number,
+    query?: string
   } = { start: 0, count: DEFAULT_COURSES_PER_PAGE };
-  hasCourses: boolean;
 
   constructor(
     public coursesService: CoursesService,
@@ -35,29 +33,35 @@ export class CoursesListComponent implements OnInit {
     private modalService: NgbModal) { }
 
   ngOnInit() {
-    concat(
-      this.route.queryParams
+    merge(
+      this.route.queryParams,
+      this.coursesService.query.pipe(debounceTime(Timeouts.SEARCH_REQUEST_DEBOUNCE))
     )
-    this.route.queryParams.subscribe(params => {
-      const { start, count } = params;
-      this.params = { start: +start, count: +count };
-      this.courses = this.coursesService.getCoursesList(params);
+    .pipe(
+      map(({ start, count, query }) => {
+        if (start && count) {
+          this.params.start = +start;
+          this.params.count = +count;
+        }
+        if (typeof query === 'string') {
+          this.params.query = query;
+        }
+        return this.params;
+      }),
+      switchMap(params => this.coursesService.getCoursesList(params)))
+    .subscribe(courses => {
+      this.courses = courses;
     });
-    this.coursesService.querySubject.subscribe(query => {
-      this.courses = this.coursesService.getCoursesList({ start: 0, count: DEFAULT_COURSES_PER_PAGE, query });
-    });
+
     this.breadcrumbService.breadcrumb = [ { label: 'Courses' } ];
+  }
+
+  get hasCourses() {
+    return !!this.courses;
   }
 
   newCourse() {
     this.router.navigate([RouterPaths.NEW_COURSE]);
-  }
-
-  filterCourses(event) {
-    const { query } = event;
-    this.params.start = 0;
-    this.params = query;
-    this.router.navigate([], { queryParams: this.params });
   }
 
   updateCourses(event) {
@@ -74,21 +78,21 @@ export class CoursesListComponent implements OnInit {
     modalRef.componentInstance.courseTitle = course.name;
     modalRef.result.then(res => {
       if(res === 'yes') {
-        this.coursesService.removeCourse({ id: course.id })
-        .pipe(tap(() => this.courses = this.coursesService.getCoursesList(this.params)))
-        // concat(
-        //   this.coursesService.removeCourse({ id: course.id }),
-        //   this.coursesService.getCoursesList(this.params)
-        // )
-        // .pipe(last())
-        // .subscribe(courses => this.courses = List(courses));
+        concat(
+          this.coursesService.removeCourse({ id: course.id }),
+          this.coursesService.getCoursesList(this.params)
+        )
+        .pipe(last())
+        // @ts-ignore
+        .subscribe(courses => this.courses = courses);
       }
     });
   }
 
   loadMore() {
     this.params.start += this.params.count;
-    this.router.navigate([], { queryParams: this.params });
+    const { start, count } = this.params;
+    this.router.navigate([], { queryParams: { start, count } });
   }
 
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, timer } from 'rxjs';
 import { Course } from './course.model';
 import { BASE_URL, COURSES_PATH } from 'src/app/core/constants';
 
@@ -8,7 +8,7 @@ import { BASE_URL, COURSES_PATH } from 'src/app/core/constants';
   providedIn: 'root'
 })
 export class CoursesService {
-  querySubject = new Subject();
+  query = new Subject();
 
   constructor(private http: HttpClient) { }
 
