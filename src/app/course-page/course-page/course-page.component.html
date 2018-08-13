@@ -1,22 +1,22 @@
 <form (ngSubmit)="saveCourse()" class="container my-2">
   <div class="form-group col-md-4">
     <label>Title</label>
-    <input [(ngModel)]="newCourse.title" type="text" required name="courseTitle" class="form-control">
+    <input [(ngModel)]="course.name" type="text" required name="courseTitle" class="form-control">
   </div>
   <div class="form-group col-md-12">
     <label>Description</label>
-    <textarea [(ngModel)]="newCourse.description" required name="courseDesc" class="form-control" rows="3"></textarea>
+    <textarea [(ngModel)]="course.description" required name="courseDesc" class="form-control" rows="3"></textarea>
   </div>
   <div class="form-group col-md-4">
     <label>Date</label>
-    <input [ngModel]="newCourse.creationDate | date:'y-MM-dd'" required (ngModelChange)="course.creationDate = $event" type="date" name="courseDate" class="form-control">
+    <input [ngModel]="course.date | date:'y-MM-dd'" required (ngModelChange)="course.date = $event" type="date" name="courseDate" class="form-control">
   </div>
   <div class="col-md-3 mb-3">
     <label>Duration</label>
     <div class="input-group">
-      <input [(ngModel)]="newCourse.duration" type="text" required name="courseDuration" class="form-control">
-      <div *ngIf="newCourse.duration" class="input-group-append">
-        <span class="input-group-text">{{newCourse && newCourse.duration | courseDuration}}</span>
+      <input [(ngModel)]="course.length" type="text" required name="courseDuration" class="form-control">
+      <div *ngIf="course.length" class="input-group-append">
+        <span class="input-group-text">{{course && course.length | courseDuration}}</span>
       </div>
     </div>
   </div>

@@ -1,16 +1,17 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { List } from 'immutable';
 import { Course } from './course.model';
 
 @Pipe({
   name: 'orderBy'
 })
 export class OrderByPipe implements PipeTransform {
-  transform(courses: Course[], sortParameter: string): Course[] {
-    const sortFunction = courses.length && typeof courses[0][sortParameter] === 'string' ?
+  transform(courses: List<Course>, sortParameter: string): List<Course> {
+    const sortFunction = courses.size && typeof courses.get(0)[sortParameter] === 'string' ?
       this.stringComparison : this.defaultComparison;
     return courses.sort((a: Course, b: Course) => {
       return sortFunction(a[sortParameter], b[sortParameter]);
-    });
+    }).toList();
   }
 
   stringComparison(a: string, b: string) {

@@ -17,9 +17,9 @@ import { Outline, freshCourseDaysLimit } from '../app/courses-list/course.consta
 class TestHostComponent {
   course: Course = {
     id: 1,
-    title: 'testhost course 1',
-    creationDate: new Date(),
-    duration: 60,
+    name: 'testhost course 1',
+    date: new Date(),
+    length: 60,
     description: 'desc 1'
   };
   updateCourses = jasmine.createSpy();
@@ -56,25 +56,25 @@ describe('CourseComponent', () => {
     it('should recieve course object & capitalize course title', () => {
       const expectedCourse: Course = {
         id: 1,
-        title: 'course 1',
-        creationDate: new Date(),
-        duration: 60,
+        name: 'course 1',
+        date: new Date(),
+        length: 60,
         description: 'desc 1'
       };
       expect(component.course).not.toBeDefined();
       component.course = expectedCourse;
       fixture.detectChanges();
       const courseTitle = fixture.nativeElement.querySelector('.course-title');
-      expect(courseTitle.textContent).toEqual(expectedCourse.title.toUpperCase());
+      expect(courseTitle.textContent).toEqual(expectedCourse.name.toUpperCase());
     });
 
     it('should raise delete event', () => {
       let deleteEvent;
       component.course = {
         id: 1,
-        title: 'course 1',
-        creationDate: new Date(),
-        duration: 60,
+        name: 'course 1',
+        date: new Date(),
+        length: 60,
         description: 'desc 1'
       };
       component.courseChangeEvent.subscribe(e => deleteEvent = e);
@@ -86,9 +86,9 @@ describe('CourseComponent', () => {
     it('should return proper border color for upcoming course', () => {
       component.course = {
         id: 1,
-        title: 'course',
-        creationDate: moment().add(4, 'days').toDate(),
-        duration: 40,
+        name: 'course',
+        date: moment().add(4, 'days').toDate(),
+        length: 40,
         description: ''
       };
       expect(component.getCourseOutlineColor()).toBe(Outline.upcoming);
@@ -97,9 +97,9 @@ describe('CourseComponent', () => {
     it('should return proper border color for fresh course', () => {
       component.course = {
         id: 1,
-        title: 'course',
-        creationDate: moment().subtract(freshCourseDaysLimit - 1, 'days').toDate(),
-        duration: 40,
+        name: 'course',
+        date: moment().subtract(freshCourseDaysLimit - 1, 'days').toDate(),
+        length: 40,
         description: ''
       };
       fixture.detectChanges();
@@ -109,9 +109,9 @@ describe('CourseComponent', () => {
     it('should return proper border color for regular course', () => {
       component.course = {
         id: 1,
-        title: 'course',
-        creationDate: moment().subtract(freshCourseDaysLimit + 1, 'days').toDate(),
-        duration: 40,
+        name: 'course',
+        date: moment().subtract(freshCourseDaysLimit + 1, 'days').toDate(),
+        length: 40,
         description: ''
       };
       fixture.detectChanges();
@@ -121,9 +121,9 @@ describe('CourseComponent', () => {
     it('should not have star icon and background as not top rated', () => {
       component.course = {
         id: 1,
-        title: 'course',
-        creationDate: new Date(),
-        duration: 40,
+        name: 'course',
+        date: new Date(),
+        length: 40,
         description: ''
       };
       fixture.detectChanges();
@@ -137,11 +137,11 @@ describe('CourseComponent', () => {
     it('should have star icon and background as top rated course', () => {
       component.course = {
         id: 1,
-        title: 'course',
-        creationDate: new Date(),
-        duration: 40,
+        name: 'course',
+        date: new Date(),
+        length: 40,
         description: '',
-        topRated: true
+        isTopRated: true
       };
       fixture.detectChanges();
       const el = fixture.nativeElement;

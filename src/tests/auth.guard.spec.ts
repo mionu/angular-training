@@ -1,5 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AuthGuard } from 'src/app/core/auth.guard';
 import { AuthorizationService } from '../app/core/authorization.service';
 
@@ -10,7 +11,7 @@ describe('AuthGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [ AuthGuard, AuthorizationService ],
-      imports: [ RouterTestingModule ]
+      imports: [ RouterTestingModule, HttpClientTestingModule ]
     });
     authService = TestBed.get(AuthorizationService);
     authGuard = TestBed.get(AuthGuard);
@@ -27,7 +28,7 @@ describe('AuthGuard', () => {
   });
 
   it('should return true when user is logged in', () => {
-    authService.currentUser = { id: 0, email: 'asd', password: '', login: 'qwe' };
+    authService.currentUser = { id: 0, password: '', login: 'qwe', name: { first: '', last: '' }, fakeToken: '' };
     expect(authGuard.canActivate(null, null)).toBeTruthy();
   });
 });

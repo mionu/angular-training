@@ -5,7 +5,7 @@
 
 <div *ngIf="!this.hasCourses" class="alert alert-secondary">No data, feel free to add new course</div>
 
-<app-course *ngFor="let item of (courses | orderBy:'creationDate')"
+<app-course *ngFor="let item of (courses | orderBy:'date')"
   [course]="item" (courseChangeEvent)="updateCourses($event)">
 </app-course>
 <button type="button" *ngIf="this.hasCourses" class="load-more btn btn-outline-secondary btn-lg btn-block" (click)="loadMore()">Load more</button>

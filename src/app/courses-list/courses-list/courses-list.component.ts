@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { List } from 'immutable';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { concat } from 'rxjs';
+import { last } from 'rxjs/operators';
 import { Course } from '../course.model';
 import { CoursesService } from '../courses.service';
 import { BreadcrumbService } from '../../shared/breadcrumb.service';
-import { SearchCoursePipe } from '../search-course.pipe';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { RouterPaths } from '../../app-routing/app-routing.constants';
+import { DEFAULT_COURSES_PER_PAGE } from 'src/app/courses-list/course.constants';
+
 
 @Component({
   selector: 'app-courses-list',
@@ -16,19 +19,28 @@ import { RouterPaths } from '../../app-routing/app-routing.constants';
   providers: [ NgbModal ]
 })
 export class CoursesListComponent implements OnInit {
-  public courses: List<Course>;
+  courses: List<Course> = List([]);
+  params: {
+    start: number,
+    count: number,
+    query?: string
+  } = { start: 0, count: DEFAULT_COURSES_PER_PAGE };
 
   constructor(
-    private coursesService: CoursesService,
+    public coursesService: CoursesService,
+    private route: ActivatedRoute,
     private router: Router,
-    private searchPipe: SearchCoursePipe,
     private breadcrumbService: BreadcrumbService,
-    private modalService: NgbModal) {
-    this.courses = null;;
-  }
+    private modalService: NgbModal) { }
 
   ngOnInit() {
-    this.courses = this.coursesService.getCoursesList();
+    this.route.queryParams.subscribe(params => {
+      const { start, count, query } = params;
+      this.params = { start: +start, count: +count, query };
+      this.coursesService.getCoursesList(params).subscribe(courses => {
+        this.courses = List(courses);
+      });
+    });
     this.breadcrumbService.breadcrumb = [ { label: 'Courses' } ];
   }
 
@@ -42,13 +54,15 @@ export class CoursesListComponent implements OnInit {
 
   filterCourses(event) {
     const { query } = event;
-    this.courses = this.searchPipe.transform(this.coursesService.coursesList, query);
+    this.params.start = 0;
+    this.params.query = query;
+    this.router.navigate([], { queryParams: this.params });
   }
 
   updateCourses(event) {
     switch(event.type) {
       case 'delete': {
-        const courseToDelete = this.coursesService.getCourseById({ id: event.courseId });
+        const courseToDelete = this.courses.find(course => course.id === event.courseId);
         this.deleteCourse(courseToDelete);
         break;
       }
@@ -57,16 +71,22 @@ export class CoursesListComponent implements OnInit {
 
   deleteCourse(course) {
     const modalRef = this.modalService.open(ModalComponent);
-    modalRef.componentInstance.courseTitle = course.title;
+    modalRef.componentInstance.courseTitle = course.name;
     modalRef.result.then(res => {
       if(res === 'yes') {
-        this.courses = this.coursesService.removeCourse({ id: course.id });
+        concat(
+          this.coursesService.removeCourse({ id: course.id }),
+          this.coursesService.getCoursesList(this.params)
+        )
+        .pipe(last())
+        .subscribe(courses => this.courses = List(courses));
       }
     });
   }
 
   loadMore() {
-    console.log('load more clicked');
+    this.params.start += this.params.count;
+    this.router.navigate([], { queryParams: this.params });
   }
 
 }
