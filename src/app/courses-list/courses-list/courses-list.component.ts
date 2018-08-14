@@ -57,7 +57,7 @@ export class CoursesListComponent implements OnInit {
   }
 
   get hasCourses() {
-    return !!this.courses;
+    return this.courses && this.courses.length > 0;
   }
 
   newCourse() {

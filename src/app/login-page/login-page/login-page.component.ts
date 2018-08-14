@@ -20,17 +20,15 @@ export class LoginPageComponent implements OnInit {
 
   doLogin() {
     this.authService.login({ login: this.login, password: this.password }).
-    subscribe(res => {
-      if(res.token) {
-        localStorage.setItem('fakeToken', res.token);
-        this.authService.getUserInfo().subscribe((user) => {
-          this.authService.currentUser = user;
+    subscribe(
+      (user) => {
+        if (user && user.login) {
           this.router.navigate([RouterPaths.COURSES], { queryParams: { start: 0, count: DEFAULT_COURSES_PER_PAGE } });
+        }
+      },
+      err => {
+        console.error(err);
       });
-      }
-    }, err => {
-      console.error(err);
-    });
   }
 
 }
