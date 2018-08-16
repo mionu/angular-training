@@ -49,6 +49,8 @@ export class CoursePageComponent implements OnInit {
           else {
             this.location.back();
           }
+        }, error => {
+          console.log(error);
         });
       }
     });

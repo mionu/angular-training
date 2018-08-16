@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { User } from './user.model';
 import { BASE_URL, AUTH_PATH, GET_USER_INFO_PATH } from 'src/app/core/constants';
@@ -9,7 +9,7 @@ import { BASE_URL, AUTH_PATH, GET_USER_INFO_PATH } from 'src/app/core/constants'
   providedIn: 'root'
 })
 export class AuthorizationService {
-  currentUser: User = null;
+  currentUser: BehaviorSubject<User> = new BehaviorSubject(null);
 
   constructor(private http: HttpClient) { }
 
@@ -27,12 +27,14 @@ export class AuthorizationService {
   }
 
   logout() {
-    this.currentUser = null;
+    this.currentUser.next(null);
     localStorage.removeItem('fakeToken');
   }
 
   isAuthenticated() {
-    return !!this.currentUser;
+    return this.currentUser.pipe(
+      map(user => user && user.login)
+    );
   }
 
   getUserInfo() {
