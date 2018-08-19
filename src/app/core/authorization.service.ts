@@ -33,7 +33,7 @@ export class AuthorizationService {
 
   isAuthenticated() {
     return this.currentUser.pipe(
-      map(user => user && user.login)
+      map(user => user && !!user.login)
     );
   }
 
