@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { of } from 'rxjs';
+import { of, BehaviorSubject } from 'rxjs';
 import { NgbModalStack } from '@ng-bootstrap/ng-bootstrap/modal/modal-stack';
 import { CoursesListComponent } from '../app/courses-list/courses-list/courses-list.component';
 import { CoursesService } from '../app/courses-list/courses.service';
@@ -58,7 +58,8 @@ describe('CoursesListComponent', () => {
     component = fixture.componentInstance;
     coursesServiceStub = {
       getCoursesList: () => of(coursesList),
-      getCourseById: jasmine.createSpy()
+      getCourseById: jasmine.createSpy(),
+      query: new BehaviorSubject('')
     };
   });
 
@@ -68,9 +69,9 @@ describe('CoursesListComponent', () => {
 
   it('should load courses on init', () => {
     expect(component.courses).toBeDefined();
-    expect(component.courses.size).toBe(0);
+    expect(component.courses.length).toBe(0);
     component.ngOnInit();
-    expect(component.courses.size).toEqual(3);
+    expect(component.courses.length).toEqual(3);
   });
 
   it('should load more courses', () => {

@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
 import { SearchComponent } from '../app/courses-list/search/search.component';
 
@@ -10,7 +11,7 @@ describe('SearchComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ SearchComponent ],
-      imports: [ FormsModule, RouterTestingModule ]
+      imports: [ FormsModule, RouterTestingModule, HttpClientTestingModule ]
     })
     .compileComponents();
   }));
@@ -23,24 +24,5 @@ describe('SearchComponent', () => {
 
   it('should create', () => {
     expect(component).toBeDefined();
-  });
-
-  it('should perform search on search button click', () => {
-    component.search = jasmine.createSpy();
-    const searchButton = fixture.nativeElement.querySelector('button');
-    searchButton.click();
-    expect(component.search).toHaveBeenCalled();
-  });
-
-  it('should raise search event', () => {
-    let searchEvent;
-    const el = fixture.nativeElement;
-    component.searchEvent.subscribe(e => searchEvent = e);
-    const searchInput = el.querySelector('.search-input');
-    const searchButton = el.querySelector('.search-button');
-    searchInput.value = 'asd';
-    searchInput.dispatchEvent(new Event('input'));
-    searchButton.click();
-    expect(searchEvent.type).toEqual('search');
   });
 });

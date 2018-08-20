@@ -19,7 +19,7 @@ import { DEFAULT_COURSES_PER_PAGE, Timeouts } from 'src/app/courses-list/course.
   providers: [ NgbModal ]
 })
 export class CoursesListComponent implements OnInit {
-  courses: Course[];
+  courses: Course[] = [];
   params: {
     start: number,
     count: number,
