@@ -1,5 +1,5 @@
 <div class="loading-overlay"
-*ngIf="service.isShown">
+*ngIf="service.isShown | async">
   <mat-progress-spinner
     class="loading-spinner"
     color="primary"

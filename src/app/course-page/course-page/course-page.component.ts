@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { delay } from 'rxjs/operators';
 import { Course } from '../../courses-list/course.model';
 import { CoursesService } from '../../courses-list/courses.service';
 import { BreadcrumbService } from '../../shared/breadcrumb.service';
@@ -42,9 +41,9 @@ export class CoursePageComponent implements OnInit {
         });
       }
       else {
-        this.loading.isShown = true;
-        this.coursesService.getCourseById({ id: courseId }).pipe(delay(2000)).subscribe(course => {
-          this.loading.isShown = false;
+        this.loading.show();
+        this.coursesService.getCourseById({ id: courseId }).subscribe(course => {
+          this.loading.hide();
           if(course) {
             this.course = course;
             this.breadcrumbService.breadcrumb.push({
@@ -55,7 +54,7 @@ export class CoursePageComponent implements OnInit {
             this.location.back();
           }
         }, error => {
-          this.loading.isShown = false;
+          this.loading.hide();
           console.log(error);
         });
       }
@@ -66,7 +65,10 @@ export class CoursePageComponent implements OnInit {
     const handler =  this.course.id ?
       this.coursesService.updateCourse(this.course) :
       this.coursesService.createCourse(this.course);
-    handler.subscribe(() => this.location.back());
+    handler.subscribe(() => {
+      this.loading.hide();
+      this.location.back();
+    });
   }
 
   cancel() {

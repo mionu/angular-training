@@ -6,6 +6,7 @@ import { last, map, switchMap, debounceTime } from 'rxjs/operators';
 import { Course } from '../course.model';
 import { CoursesService } from '../courses.service';
 import { BreadcrumbService } from '../../shared/breadcrumb.service';
+import { LoadingService } from '../../core/loading.service';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { RouterPaths } from '../../app-routing/app-routing.constants';
 import { DEFAULT_COURSES_PER_PAGE, Timeouts } from 'src/app/courses-list/course.constants';
@@ -30,6 +31,7 @@ export class CoursesListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private breadcrumbService: BreadcrumbService,
+    private loading: LoadingService,
     private modalService: NgbModal) { }
 
   ngOnInit() {
@@ -46,11 +48,13 @@ export class CoursesListComponent implements OnInit {
         if (typeof query === 'string') {
           this.params.query = query;
         }
+        this.loading.show();
         return this.params;
       }),
       switchMap(params => this.coursesService.getCoursesList(params)))
     .subscribe(courses => {
       this.courses = courses;
+      this.loading.hide();
     });
 
     this.breadcrumbService.breadcrumb = [ { label: 'Courses' } ];
@@ -78,13 +82,17 @@ export class CoursesListComponent implements OnInit {
     modalRef.componentInstance.courseTitle = course.name;
     modalRef.result.then(res => {
       if(res === 'yes') {
+        this.loading.show();
         concat(
           this.coursesService.removeCourse({ id: course.id }),
           this.coursesService.getCoursesList(this.params)
         )
         .pipe(last())
-        // @ts-ignore
-        .subscribe(courses => this.courses = courses);
+        .subscribe(courses => {
+          this.loading.hide();
+          // @ts-ignore
+          this.courses = courses
+        });
       }
     });
   }
