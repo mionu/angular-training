@@ -13,8 +13,7 @@ import { ModalComponent } from './shared/modal/modal.component';
 import { LoginPageModule } from './login-page/login-page.module';
 import { CoursePageModule } from './course-page/course-page.module';
 import { AuthInterceptor } from './core/auth.interceptor';
-import { authReducer } from './core/auth.reducer';
-import { userReducer } from 'src/app/core/user.reducer';
+import { rootReducer } from 'src/app/core/root-reducer';
 import { AuthEffects } from './core/auth.effects';
 
 @NgModule({
@@ -24,7 +23,7 @@ import { AuthEffects } from './core/auth.effects';
   imports: [
     BrowserModule,
     HttpClientModule,
-    StoreModule.forRoot({ fakeToken: authReducer, user: userReducer }),
+    StoreModule.forRoot(rootReducer),
     EffectsModule.forRoot([ AuthEffects ]),
     NgbModule.forRoot(),
     CoreModule,

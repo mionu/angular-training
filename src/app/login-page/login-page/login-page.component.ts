@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { Actions, ofType } from '@ngrx/effects';
+import { Store, select } from '@ngrx/store';
+import { filter } from 'rxjs/operators';
 import { RouterPaths } from '../../app-routing/app-routing.constants';
 import { DEFAULT_COURSES_PER_PAGE } from 'src/app/courses-list/course.constants';
 import { LoadingService } from '../../core/loading.service';
@@ -19,12 +19,12 @@ export class LoginPageComponent implements OnInit {
   constructor(
     private router: Router,
     private loading: LoadingService,
-    private store: Store<any>,
-    private actions: Actions
+    private store: Store<any>
   ) {
-    this.actions.pipe(
-      ofType(AUTH_ACTIONS.LOGIN_SUCCESS)
-    ).subscribe(() => this.router.navigate([RouterPaths.COURSES], { queryParams: { start: 0, count: DEFAULT_COURSES_PER_PAGE } }));
+    this.store.pipe(
+      select('fakeToken'),
+      filter(token => !!token)
+    ).subscribe(() => this.router.navigate([RouterPaths.COURSES], { queryParams: { start: 0, count: DEFAULT_COURSES_PER_PAGE }}));
   }
 
   ngOnInit() {
@@ -32,7 +32,9 @@ export class LoginPageComponent implements OnInit {
 
   doLogin() {
     this.loading.show();
-    this.store.dispatch({ type: AUTH_ACTIONS.LOGIN, payload: { login: this.login, password: this.password } });
+    this.store.dispatch({
+      type: AUTH_ACTIONS.LOGIN, payload: { login: this.login, password: this.password }
+    });
   }
 
 }

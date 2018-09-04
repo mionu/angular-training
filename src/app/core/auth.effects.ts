@@ -22,7 +22,7 @@ export class AuthEffects {
       localStorage.setItem('fakeToken', res.token);
       return { type: AUTH_ACTIONS.LOGIN_SUCCESS, payload: res.token };
     }),
-    catchError(() => of({ type: AUTH_ACTIONS.LOGIN_FAILED }))
+    catchError(() => of({ type: AUTH_ACTIONS.AUTH_ACTION_FAILED }))
   );
 
   @Effect() userInfo$ = this.actions$.pipe(
@@ -32,12 +32,12 @@ export class AuthEffects {
       this.loading.hide();
       return { type: AUTH_ACTIONS.GET_USER_INFO, payload: res };
     }),
-    catchError(() => of({ type: AUTH_ACTIONS.LOGIN_FAILED }))
+    catchError(() => of({ type: AUTH_ACTIONS.AUTH_ACTION_FAILED }))
   );
 
-  @Effect() logout$ = this.actions$.pipe(
+  @Effect({ dispatch: false }) logout$ = this.actions$.pipe(
     ofType(AUTH_ACTIONS.LOGOUT),
     map(() => this.service.logout()),
-    catchError(() => of({ type: AUTH_ACTIONS.LOGIN_FAILED }))
+    catchError(() => of({ type: AUTH_ACTIONS.AUTH_ACTION_FAILED }))
   );
 }
