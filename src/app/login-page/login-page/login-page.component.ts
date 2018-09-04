@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
-import { map } from 'rxjs/operators';
 import { RouterPaths } from '../../app-routing/app-routing.constants';
 import { DEFAULT_COURSES_PER_PAGE } from 'src/app/courses-list/course.constants';
 import { LoadingService } from '../../core/loading.service';

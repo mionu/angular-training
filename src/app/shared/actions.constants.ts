@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const AUTH_ACTIONS = {
   LOGIN: 'LOGIN',
   LOGIN_SUCCESS: 'LOGIN_SUCCESS',
@@ -8,4 +9,14 @@ const AUTH_ACTIONS = {
 
 export {
   AUTH_ACTIONS
+=======
+const LOGIN = 'LOGIN';
+const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+const LOGIN_FAILED = 'LOGIN_FAILED';
+
+export {
+  LOGIN,
+  LOGIN_SUCCESS,
+  LOGIN_FAILED
+>>>>>>> da2057495115a65039ffad4565e48fa98956a56a
 };
