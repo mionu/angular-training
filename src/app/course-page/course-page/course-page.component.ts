@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 import { Course } from '../../courses-list/course.model';
 import { CoursesService } from '../../courses-list/courses.service';
 import { BreadcrumbService } from '../../shared/breadcrumb.service';
+import { LoadingService } from '../../core/loading.service';
 
 @Component({
   selector: 'app-course-page',
@@ -24,7 +25,8 @@ export class CoursePageComponent implements OnInit {
     private coursesService: CoursesService,
     private breadcrumbService: BreadcrumbService,
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private loading: LoadingService
   ) { }
 
   ngOnInit() {
@@ -39,7 +41,9 @@ export class CoursePageComponent implements OnInit {
         });
       }
       else {
+        this.loading.show();
         this.coursesService.getCourseById({ id: courseId }).subscribe(course => {
+          this.loading.hide();
           if(course) {
             this.course = course;
             this.breadcrumbService.breadcrumb.push({
@@ -49,6 +53,9 @@ export class CoursePageComponent implements OnInit {
           else {
             this.location.back();
           }
+        }, error => {
+          this.loading.hide();
+          console.log(error);
         });
       }
     });
@@ -58,7 +65,10 @@ export class CoursePageComponent implements OnInit {
     const handler =  this.course.id ?
       this.coursesService.updateCourse(this.course) :
       this.coursesService.createCourse(this.course);
-    handler.subscribe(() => this.location.back());
+    handler.subscribe(() => {
+      this.loading.hide();
+      this.location.back();
+    });
   }
 
   cancel() {

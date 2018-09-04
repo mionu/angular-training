@@ -1,5 +1,6 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { of } from 'rxjs';
+import { CoursesService } from '../courses.service';
 
 @Component({
   selector: 'app-search',
@@ -8,19 +9,16 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SearchComponent implements OnInit {
   public searchQuery: string = '';
-  @Output() public searchEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private coursesService: CoursesService) { }
 
-  search() {
-    this.searchEvent.emit({ type: 'search', query: this.searchQuery });
-  }
+  ngOnInit() { }
 
-  ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      const { query } = params;
-      this.searchQuery = query;
-    });
+  onInput() {
+    if(this.searchQuery.length === 0 || this.searchQuery.length > 2) {
+      of(this.searchQuery)
+      .subscribe(q => this.coursesService.query.next({ query: q }));
+    }
   }
 
 }

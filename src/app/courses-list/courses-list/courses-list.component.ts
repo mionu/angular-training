@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { List } from 'immutable';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { concat } from 'rxjs';
-import { last } from 'rxjs/operators';
+import { concat, merge } from 'rxjs';
+import { last, map, switchMap, debounceTime } from 'rxjs/operators';
 import { Course } from '../course.model';
 import { CoursesService } from '../courses.service';
 import { BreadcrumbService } from '../../shared/breadcrumb.service';
+import { LoadingService } from '../../core/loading.service';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { RouterPaths } from '../../app-routing/app-routing.constants';
-import { DEFAULT_COURSES_PER_PAGE } from 'src/app/courses-list/course.constants';
+import { DEFAULT_COURSES_PER_PAGE, Timeouts } from 'src/app/courses-list/course.constants';
 
 
 @Component({
@@ -19,7 +19,7 @@ import { DEFAULT_COURSES_PER_PAGE } from 'src/app/courses-list/course.constants'
   providers: [ NgbModal ]
 })
 export class CoursesListComponent implements OnInit {
-  courses: List<Course> = List([]);
+  courses: Course[] = [];
   params: {
     start: number,
     count: number,
@@ -31,39 +31,47 @@ export class CoursesListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private breadcrumbService: BreadcrumbService,
+    private loading: LoadingService,
     private modalService: NgbModal) { }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      const { start, count, query } = params;
-      this.params = { start: +start, count: +count, query };
-      this.coursesService.getCoursesList(params).subscribe(courses => {
-        this.courses = List(courses);
-      });
+    merge(
+      this.route.queryParams,
+      this.coursesService.query.pipe(debounceTime(Timeouts.SEARCH_REQUEST_DEBOUNCE))
+    )
+    .pipe(
+      map(({ start, count, query }) => {
+        if (start && count) {
+          this.params.start = +start;
+          this.params.count = +count;
+        }
+        if (typeof query === 'string') {
+          this.params.query = query;
+        }
+        this.loading.show();
+        return this.params;
+      }),
+      switchMap(params => this.coursesService.getCoursesList(params)))
+    .subscribe(courses => {
+      this.courses = courses;
+      this.loading.hide();
     });
+
     this.breadcrumbService.breadcrumb = [ { label: 'Courses' } ];
   }
 
   get hasCourses() {
-    return this.courses && this.courses.size > 0;
+    return this.courses && this.courses.length > 0;
   }
 
   newCourse() {
     this.router.navigate([RouterPaths.NEW_COURSE]);
   }
 
-  filterCourses(event) {
-    const { query } = event;
-    this.params.start = 0;
-    this.params.query = query;
-    this.router.navigate([], { queryParams: this.params });
-  }
-
   updateCourses(event) {
     switch(event.type) {
       case 'delete': {
-        const courseToDelete = this.courses.find(course => course.id === event.courseId);
-        this.deleteCourse(courseToDelete);
+        this.deleteCourse(event.course);
         break;
       }
     }
@@ -74,19 +82,25 @@ export class CoursesListComponent implements OnInit {
     modalRef.componentInstance.courseTitle = course.name;
     modalRef.result.then(res => {
       if(res === 'yes') {
+        this.loading.show();
         concat(
           this.coursesService.removeCourse({ id: course.id }),
           this.coursesService.getCoursesList(this.params)
         )
         .pipe(last())
-        .subscribe(courses => this.courses = List(courses));
+        .subscribe(courses => {
+          this.loading.hide();
+          // @ts-ignore
+          this.courses = courses
+        });
       }
     });
   }
 
   loadMore() {
     this.params.start += this.params.count;
-    this.router.navigate([], { queryParams: this.params });
+    const { start, count } = this.params;
+    this.router.navigate([], { queryParams: { start, count } });
   }
 
 }

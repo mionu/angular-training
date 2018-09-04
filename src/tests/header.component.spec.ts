@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { of } from 'rxjs';
+import { of, BehaviorSubject } from 'rxjs';
 import { HeaderComponent } from '../app/core/header/header.component';
 import { AuthorizationService } from '../app/core/authorization.service';
 import { User } from '../app/core/user.model';
@@ -34,8 +34,8 @@ describe('HeaderComponent', () => {
     spyOn(component.router, 'navigate').and.returnValue(true);
     authServiceStub = {
       getUserInfo: () => of(user),
-      currentUser: user,
-      isAuthenticated: () => true,
+      currentUser: new BehaviorSubject(user),
+      isAuthenticated: () => of(true),
       logout: jasmine.createSpy()
     }
   });
