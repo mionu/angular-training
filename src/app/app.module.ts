@@ -14,7 +14,8 @@ import { LoginPageModule } from './login-page/login-page.module';
 import { CoursePageModule } from './course-page/course-page.module';
 import { AuthInterceptor } from './core/auth.interceptor';
 import { authReducer } from './core/auth.reducer';
-import { AuthEffects } from 'src/app/core/auth.effect';
+import { userReducer } from 'src/app/core/user.reducer';
+import { AuthEffects } from './core/auth.effects';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { AuthEffects } from 'src/app/core/auth.effect';
   imports: [
     BrowserModule,
     HttpClientModule,
-    StoreModule.forRoot({ fakeToken: authReducer }),
+    StoreModule.forRoot({ fakeToken: authReducer, user: userReducer }),
     EffectsModule.forRoot([ AuthEffects ]),
     NgbModule.forRoot(),
     CoreModule,

@@ -8,32 +8,15 @@ import { BASE_URL, AUTH_PATH, GET_USER_INFO_PATH } from 'src/app/core/constants'
   providedIn: 'root'
 })
 export class AuthorizationService {
-  currentUser: BehaviorSubject<User> = new BehaviorSubject(null);
 
   constructor(private http: HttpClient) { }
 
   login({ login, password }): Observable<any> {
-    return this.http.post<any>(`${BASE_URL}${AUTH_PATH}`, { login, password })
-      .pipe(
-        map(({ token }) => {
-          if (token) {
-            localStorage.setItem('fakeToken', token);
-            return token;
-          }
-        }),
-        switchMap(() => this.getUserInfo())
-      );
+    return this.http.post<any>(`${BASE_URL}${AUTH_PATH}`, { login, password });
   }
 
   logout() {
-    this.currentUser.next(null);
     localStorage.removeItem('fakeToken');
-  }
-
-  isAuthenticated() {
-    return this.currentUser.pipe(
-      map(user => user && !!user.login)
-    );
   }
 
   getUserInfo() {
