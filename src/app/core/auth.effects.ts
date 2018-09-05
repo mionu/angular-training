@@ -37,7 +37,7 @@ export class AuthEffects {
 
   @Effect({ dispatch: false }) logout$ = this.actions$.pipe(
     ofType(AUTH_ACTIONS.LOGOUT),
-    map(() => this.service.logout()),
+    tap(() => this.service.logout()),
     catchError(() => of({ type: AUTH_ACTIONS.AUTH_ACTION_FAILED }))
   );
 }

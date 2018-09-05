@@ -23,7 +23,7 @@ export class LoginPageComponent implements OnInit {
   ) {
     this.store.pipe(
       select('fakeToken'),
-      filter(token => !!token)
+      filter(Boolean)
     ).subscribe(() => this.router.navigate([RouterPaths.COURSES], { queryParams: { start: 0, count: DEFAULT_COURSES_PER_PAGE }}));
   }
 

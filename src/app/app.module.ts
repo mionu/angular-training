@@ -15,6 +15,7 @@ import { CoursePageModule } from './course-page/course-page.module';
 import { AuthInterceptor } from './core/auth.interceptor';
 import { rootReducer } from 'src/app/core/root-reducer';
 import { AuthEffects } from './core/auth.effects';
+import { CoursesEffects } from './courses-list/courses.effects';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,7 @@ import { AuthEffects } from './core/auth.effects';
     BrowserModule,
     HttpClientModule,
     StoreModule.forRoot(rootReducer),
-    EffectsModule.forRoot([ AuthEffects ]),
+    EffectsModule.forRoot([ AuthEffects, CoursesEffects ]),
     NgbModule.forRoot(),
     CoreModule,
     SharedModule,

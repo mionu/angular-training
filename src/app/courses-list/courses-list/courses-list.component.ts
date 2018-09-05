@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { concat, merge } from 'rxjs';
-import { last, map, switchMap, debounceTime } from 'rxjs/operators';
+import { concat, merge, Observable } from 'rxjs';
+import { last, map, debounceTime } from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
 import { Course } from '../course.model';
 import { CoursesService } from '../courses.service';
 import { BreadcrumbService } from '../../shared/breadcrumb.service';
@@ -10,6 +11,7 @@ import { LoadingService } from '../../core/loading.service';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { RouterPaths } from '../../app-routing/app-routing.constants';
 import { DEFAULT_COURSES_PER_PAGE, Timeouts } from 'src/app/courses-list/course.constants';
+import { COURSES_ACTIONS } from '../../shared/actions.constants';
 
 
 @Component({
@@ -19,7 +21,7 @@ import { DEFAULT_COURSES_PER_PAGE, Timeouts } from 'src/app/courses-list/course.
   providers: [ NgbModal ]
 })
 export class CoursesListComponent implements OnInit {
-  courses: Course[] = [];
+  courses: Observable<Array<Course>>;
   params: {
     start: number,
     count: number,
@@ -32,7 +34,11 @@ export class CoursesListComponent implements OnInit {
     private router: Router,
     private breadcrumbService: BreadcrumbService,
     private loading: LoadingService,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal,
+    private store: Store<any>
+  ) {
+    this.courses = store.pipe(select('courses'));
+  }
 
   ngOnInit() {
     merge(
@@ -40,7 +46,7 @@ export class CoursesListComponent implements OnInit {
       this.coursesService.query.pipe(debounceTime(Timeouts.SEARCH_REQUEST_DEBOUNCE))
     )
     .pipe(
-      map(({ start, count, query }) => {
+      map(({ start = '0', count = '10', query }) => {
         if (start && count) {
           this.params.start = +start;
           this.params.count = +count;
@@ -50,18 +56,15 @@ export class CoursesListComponent implements OnInit {
         }
         this.loading.show();
         return this.params;
-      }),
-      switchMap(params => this.coursesService.getCoursesList(params)))
-    .subscribe(courses => {
-      this.courses = courses;
-      this.loading.hide();
-    });
+      })
+      // @ts-ignore
+    ).subscribe(params => this.store.dispatch({ type: COURSES_ACTIONS.GET_COURSES_LIST, payload: params }));
 
     this.breadcrumbService.breadcrumb = [ { label: 'Courses' } ];
   }
 
   get hasCourses() {
-    return this.courses && this.courses.length > 0;
+    return this.courses;
   }
 
   newCourse() {
@@ -88,10 +91,8 @@ export class CoursesListComponent implements OnInit {
           this.coursesService.getCoursesList(this.params)
         )
         .pipe(last())
-        .subscribe(courses => {
+        .subscribe(() => {
           this.loading.hide();
-          // @ts-ignore
-          this.courses = courses
         });
       }
     });

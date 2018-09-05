@@ -3,10 +3,10 @@
   <button class="btn btn-outline-primary my-2 my-sm-0" routerLink="/courses/new"><span class="oi oi-plus mr-2"></span>Add course</button>
 </nav>
 
-<div *ngIf="!this.hasCourses" class="alert alert-secondary">No data, feel free to add new course</div>
+<div *ngIf="!hasCourses" class="alert alert-secondary">No data, feel free to add new course</div>
 
-<app-course *ngFor="let item of courses"
+<app-course *ngFor="let item of (courses | async)"
   [course]="item" (courseChangeEvent)="updateCourses($event)">
 </app-course>
 <button type="button" class="load-more btn btn-outline-secondary btn-lg btn-block"
-  *ngIf="this.hasCourses" (click)="loadMore()">Load more</button>
+  *ngIf="hasCourses" (click)="loadMore()">Load more</button>
