@@ -15,7 +15,7 @@ import { CoursePageModule } from './course-page/course-page.module';
 import { AuthInterceptor } from './core/auth.interceptor';
 import { rootReducer } from 'src/app/core/root-reducer';
 import { AuthEffects } from './core/auth.effects';
-import { CoursesEffects } from './courses-list/courses.effects';
+import { CoursesEffects } from './shared/courses/courses.effects';
 
 @NgModule({
   declarations: [

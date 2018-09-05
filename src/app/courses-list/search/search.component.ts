@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { of } from 'rxjs';
-import { CoursesService } from '../courses.service';
+import { CoursesService } from '../../shared/courses/courses.service';
 
 @Component({
   selector: 'app-search',

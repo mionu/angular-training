@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CoursePageComponent } from '../app/course-page/course-page/course-page.component';
 import { SharedModule } from '../app/shared/shared.module';
-import { CoursesService } from '../app/courses-list/courses.service';
+import { CoursesService } from '../app/shared/courses/courses.service';
 
 describe('CoursePageComponent', () => {
   let component: CoursePageComponent;

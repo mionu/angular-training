@@ -30,7 +30,7 @@ export class CoursesService {
     return this.http.post<Course>(`${BASE_URL}${COURSES_PATH}`, newCourse, { headers });
   }
 
-  getCourseById({ id }): Observable<Course> {
+  getCourseById(id): Observable<Course> {
     return this.http.get<Course>(`${BASE_URL}${COURSES_PATH}/${id}`);
   }
 
@@ -41,7 +41,7 @@ export class CoursesService {
     return this.http.patch<Course>(`${BASE_URL}${COURSES_PATH}/${updatedCourse.id}`, updatedCourse, { headers });
   }
 
-  removeCourse({ id }): Observable<Course> {
+  removeCourse(id): Observable<Course> {
     return this.http.delete<Course>(`${BASE_URL}${COURSES_PATH}/${id}`);
   }
 }

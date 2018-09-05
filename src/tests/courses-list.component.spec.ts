@@ -5,8 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of, BehaviorSubject } from 'rxjs';
 import { NgbModalStack } from '@ng-bootstrap/ng-bootstrap/modal/modal-stack';
 import { CoursesListComponent } from '../app/courses-list/courses-list/courses-list.component';
-import { CoursesService } from '../app/courses-list/courses.service';
-import { OrderByPipe } from '../app/courses-list/order-by.pipe';
+import { CoursesService } from '../app/shared/courses/courses.service';
 import { SearchComponent } from '../app/courses-list/search/search.component';
 import { ScrollBar } from '@ng-bootstrap/ng-bootstrap/util/scrollbar';
 
@@ -39,8 +38,7 @@ describe('CoursesListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         CoursesListComponent,
-        SearchComponent,
-        OrderByPipe
+        SearchComponent
       ],
       imports: [ FormsModule, RouterTestingModule ],
       providers:[

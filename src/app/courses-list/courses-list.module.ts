@@ -6,7 +6,6 @@ import { CoursesListComponent } from './courses-list/courses-list.component';
 import { CourseComponent } from './course/course.component';
 import { SearchComponent } from './search/search.component';
 import { CourseOutlineDirective } from './course-outline.directive';
-import { OrderByPipe } from './order-by.pipe';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
@@ -20,8 +19,7 @@ import { SharedModule } from '../shared/shared.module';
     CoursesListComponent,
     CourseComponent,
     SearchComponent,
-    CourseOutlineDirective,
-    OrderByPipe
+    CourseOutlineDirective
   ],
   exports: [ CoursesListComponent ]
 })

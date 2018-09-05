@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { concat, merge, Observable } from 'rxjs';
-import { last, map, debounceTime } from 'rxjs/operators';
+import { merge, Observable } from 'rxjs';
+import { map, debounceTime } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
-import { Course } from '../course.model';
-import { CoursesService } from '../courses.service';
+import { Course } from '../../shared/courses/course.model';
+import { CoursesService } from '../../shared/courses/courses.service';
 import { BreadcrumbService } from '../../shared/breadcrumb.service';
 import { LoadingService } from '../../core/loading.service';
 import { ModalComponent } from '../../shared/modal/modal.component';
@@ -35,7 +35,7 @@ export class CoursesListComponent implements OnInit {
     private breadcrumbService: BreadcrumbService,
     private loading: LoadingService,
     private modalService: NgbModal,
-    private store: Store<any>
+    private store: Store<{courses: Array<Course>}>
   ) {
     this.courses = store.pipe(select('courses'));
   }
@@ -57,7 +57,6 @@ export class CoursesListComponent implements OnInit {
         this.loading.show();
         return this.params;
       })
-      // @ts-ignore
     ).subscribe(params => this.store.dispatch({ type: COURSES_ACTIONS.GET_COURSES_LIST, payload: params }));
 
     this.breadcrumbService.breadcrumb = [ { label: 'Courses' } ];
@@ -86,14 +85,7 @@ export class CoursesListComponent implements OnInit {
     modalRef.result.then(res => {
       if(res === 'yes') {
         this.loading.show();
-        concat(
-          this.coursesService.removeCourse({ id: course.id }),
-          this.coursesService.getCoursesList(this.params)
-        )
-        .pipe(last())
-        .subscribe(() => {
-          this.loading.hide();
-        });
+        this.store.dispatch({ type: COURSES_ACTIONS.DELETE_COURSE, payload: course.id });
       }
     });
   }
