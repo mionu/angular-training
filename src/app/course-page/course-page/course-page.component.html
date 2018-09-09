@@ -1,27 +1,30 @@
-<form (ngSubmit)="saveCourse()" class="container my-2">
+<form [formGroup]="courseForm" (ngSubmit)="saveCourse()" class="container my-2">
   <div class="form-group col-md-4">
     <label>Title</label>
-    <input [(ngModel)]="course.name" type="text" required name="courseTitle" class="form-control">
+    <input formControlName="name" [ngClass]="{'is-invalid': form.name.invalid}" type="text" class="form-control">
   </div>
   <div class="form-group col-md-12">
     <label>Description</label>
-    <textarea [(ngModel)]="course.description" required name="courseDesc" class="form-control" rows="3"></textarea>
+    <textarea formControlName="description" [ngClass]="{'is-invalid': form.description.invalid}" class="form-control" rows="3"></textarea>
   </div>
   <div class="form-group col-md-4">
     <label>Date</label>
-    <input [ngModel]="course.date | date:'y-MM-dd'" required (ngModelChange)="course.date = $event" type="date" name="courseDate" class="form-control">
+    <app-date-input formControlName="date" [invalid]="form.date.invalid"></app-date-input>
   </div>
   <div class="col-md-3 mb-3">
     <label>Duration</label>
     <div class="input-group">
-      <input [(ngModel)]="course.length" type="text" required name="courseDuration" class="form-control">
-      <div *ngIf="course.length" class="input-group-append">
-        <span class="input-group-text">{{course && course.length | courseDuration}}</span>
+      <input formControlName="length" type="text" [ngClass]="{'is-invalid': form.length.invalid}" class="form-control">
+      <div *ngIf="form.length.value" class="input-group-append">
+        <span class="input-group-text">{{form.length.value | courseDuration}}</span>
       </div>
     </div>
   </div>
   <div class="btn-group col-md-3">
-    <button type="submit" class="btn save-btn btn-outline-primary">save</button>
+    <button type="submit" class="btn save-btn" [disabled]="courseForm.invalid"
+      [ngClass]="{'btn-outline-muted': courseForm.invalid, 'btn-outline-primary': courseForm.valid}">save</button>
     <button type="button" (click)="cancel()" class="delete-button btn btn-outline-danger">cancel</button>
   </div>
+  <div>{{courseForm.value | json }}</div>
+  <div>{{courseForm.status}}</div>
 </form>
