@@ -78,6 +78,15 @@ export class CoursePageComponent implements OnInit {
     return this.courseForm.controls;
   }
 
+  isInvalid(controlName) {
+    const control = this.form[controlName];
+    return control.invalid && (control.dirty || control.touched);
+  }
+
+  getErrors(controlName) {
+    return this.form[controlName].errors;
+  }
+
   saveCourse() {
     const actionType = this.courseId ? COURSES_ACTIONS.UPDATE_COURSE: COURSES_ACTIONS.CREATE_COURSE;
     this.store.dispatch({ type: actionType, payload: this.courseForm.getRawValue() });

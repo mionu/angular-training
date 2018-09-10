@@ -1,3 +1,7 @@
-<p>
-  duration-input works!
-</p>
+<div class="input-group">
+  <input type="text" (ngModelChange)="onInput($event)" [ngModel]="value" (blur)="onTouched($event)"
+  class="form-control" [ngClass]="{'is-invalid': invalid}">
+  <div *ngIf="!!value" class="input-group-append">
+    <span class="input-group-text">{{value | courseDuration}}</span>
+  </div>
+</div>

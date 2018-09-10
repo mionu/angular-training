@@ -15,6 +15,10 @@ import { DurationInputComponent } from './duration-input/duration-input.componen
     CoreModule,
     SharedModule
   ],
-  declarations: [ CoursePageComponent, DateInputComponent, DurationInputComponent ]
+  declarations: [
+    CoursePageComponent,
+    DateInputComponent,
+    DurationInputComponent
+  ]
 })
 export class CoursePageModule { }
