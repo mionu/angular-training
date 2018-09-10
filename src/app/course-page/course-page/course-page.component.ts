@@ -12,13 +12,21 @@ import { LoadingService } from '../../core/loading.service';
 import { COURSES_ACTIONS } from '../../shared/actions.constants';
 import { dateValidator } from '../date.validator';
 
+const blankCourse = {
+  id: null,
+  name: '',
+  description: '',
+  date: null,
+  length: null
+};
+
 @Component({
   selector: 'app-course-page',
   templateUrl: './course-page.component.html',
   styleUrls: ['./course-page.component.css']
 })
 export class CoursePageComponent implements OnInit {
-  private courseId;
+  private course: Course = blankCourse;
 
   course$: Observable<Course>;
 
@@ -47,7 +55,6 @@ export class CoursePageComponent implements OnInit {
     this.route.params.subscribe(params => {
       const courseId = params.id;
       if(!courseId) {
-        this.courseId = null;
         this.breadcrumbService.breadcrumb.push({
           label: 'New course'
         });
@@ -63,9 +70,9 @@ export class CoursePageComponent implements OnInit {
         this.breadcrumbService.breadcrumb[1] = {
           label: course.name
         };
-        this.courseId = course.id;
+        this.course = course;
         const date = moment(course.date).format('DD/MM/YYYY');
-        this.courseForm.setValue(_.omit(_.assign(course, { date }), [ 'id', 'isTopRated', 'authors' ]));
+        this.courseForm.setValue(_.omit(_.assign({}, course, { date }), [ 'id', 'isTopRated', 'authors' ]));
       }
     });
   }
@@ -88,8 +95,11 @@ export class CoursePageComponent implements OnInit {
   }
 
   saveCourse() {
-    const actionType = this.courseId ? COURSES_ACTIONS.UPDATE_COURSE: COURSES_ACTIONS.CREATE_COURSE;
-    this.store.dispatch({ type: actionType, payload: this.courseForm.getRawValue() });
+    const actionType = this.course.id ? COURSES_ACTIONS.UPDATE_COURSE: COURSES_ACTIONS.CREATE_COURSE;
+    const formValue = this.courseForm.getRawValue();
+    const date = moment(formValue.date, 'DD/MM/YYYY').toDate();
+    const course = _.assign({}, this.course, formValue, { date });
+    this.store.dispatch({ type: actionType, payload: course });
   }
 
   cancel() {
