@@ -1,10 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 import { Location } from '@angular/common';
-import { Course } from '../../courses-list/course.model';
-import { CoursesService } from '../../courses-list/courses.service';
+import { Store, select } from '@ngrx/store';
+import { Course } from '../../shared/courses/course.model';
 import { BreadcrumbService } from '../../shared/breadcrumb.service';
 import { LoadingService } from '../../core/loading.service';
+import { COURSES_ACTIONS } from '../../shared/actions.constants';
+
+const blankCourse: Course = {
+  id: null,
+  name: '',
+  length: 0,
+  description: '',
+  date: null
+};
 
 @Component({
   selector: 'app-course-page',
@@ -12,22 +22,19 @@ import { LoadingService } from '../../core/loading.service';
   styleUrls: ['./course-page.component.css']
 })
 export class CoursePageComponent implements OnInit {
-  course: Course = {
-    id: null,
-    name: '',
-    description: '',
-    length: null,
-    date: null,
-    isTopRated: false
-  };
+  course: Course = blankCourse;
+
+  course$: Observable<Course>;
 
   constructor(
-    private coursesService: CoursesService,
     private breadcrumbService: BreadcrumbService,
     private route: ActivatedRoute,
     private location: Location,
-    private loading: LoadingService
-  ) { }
+    private loading: LoadingService,
+    private store: Store<{currentCourse: Course}>
+  ) {
+    this.course$ = store.pipe(select('currentCourse'));
+  }
 
   ngOnInit() {
     this.breadcrumbService.breadcrumb = [{
@@ -42,33 +49,27 @@ export class CoursePageComponent implements OnInit {
       }
       else {
         this.loading.show();
-        this.coursesService.getCourseById({ id: courseId }).subscribe(course => {
-          this.loading.hide();
-          if(course) {
-            this.course = course;
-            this.breadcrumbService.breadcrumb.push({
-              label: this.course.name
-            });
-          }
-          else {
-            this.location.back();
-          }
-        }, error => {
-          this.loading.hide();
-          console.log(error);
-        });
+        this.store.dispatch({ type: COURSES_ACTIONS.GET_COURSE_BY_ID, payload: courseId });
+      }
+    });
+    this.course$.subscribe(course => {
+      if(course) {
+        this.loading.hide();
+        this.breadcrumbService.breadcrumb[1] = {
+          label: course.name
+        };
+        this.course = course;
       }
     });
   }
 
+  ngOnDestroy() {
+    this.store.dispatch({ type: COURSES_ACTIONS.COURSE_RECEIVED, payload: null });
+  }
+
   saveCourse() {
-    const handler =  this.course.id ?
-      this.coursesService.updateCourse(this.course) :
-      this.coursesService.createCourse(this.course);
-    handler.subscribe(() => {
-      this.loading.hide();
-      this.location.back();
-    });
+    const actionType = this.course.id ? COURSES_ACTIONS.UPDATE_COURSE: COURSES_ACTIONS.CREATE_COURSE;
+    this.store.dispatch({ type: actionType, payload: this.course });
   }
 
   cancel() {

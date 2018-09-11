@@ -1,28 +1,34 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { AuthorizationService } from './authorization.service';
 import { RouterPaths } from '../app-routing/app-routing.constants';
+import { User } from 'src/app/core/user.model';
+import { AUTH_ACTIONS } from '../shared/actions.constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthorizationService, private router: Router) {}
+  user: Observable<User>
+
+  constructor(
+    private router: Router,
+    private store: Store<any>
+  ) {
+    // @ts-ignore
+    this.user = store.pipe(select('user'));
+  }
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-      return this.authService.getUserInfo().pipe(
-        map(user => {
-          if (user && user.login) {
-            this.authService.currentUser.next(user);
-            return true;
-          }
-          this.router.navigate([RouterPaths.LOGIN]);
-          return false;
-        })
-      );
+      const fakeToken = localStorage.getItem('fakeToken');
+      if (!fakeToken) {
+        this.router.navigate([RouterPaths.LOGIN]);
+        return false;
+      }
+      this.store.dispatch({ type: AUTH_ACTIONS.LOGIN_SUCCESS, payload: fakeToken});
+      return true;
   }
 }

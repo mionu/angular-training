@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
-import { Course } from '../course.model';
+import { Course } from '../../shared/courses/course.model';
 import { Outline, freshCourseDaysLimit } from '../course.constants';
 import { RouterPaths } from '../../app-routing/app-routing.constants';
 

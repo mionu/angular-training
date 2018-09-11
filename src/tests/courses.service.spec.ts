@@ -2,8 +2,8 @@ import { inject, TestBed, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { concat } from 'rxjs';
 import { last } from 'rxjs/operators';
-import { CoursesService } from '../app/courses-list/courses.service';
-import { Course } from '../app/courses-list/course.model';
+import { CoursesService } from '../app/shared/courses/courses.service';
+import { Course } from '../app/shared/courses/course.model';
 
 const courses = [{
   id: 1,
